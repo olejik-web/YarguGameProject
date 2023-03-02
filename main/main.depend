@@ -1,7 +1,8 @@
 # depslib dependency file v1.0
-1677666015 source:c:\users\user\desktop\gameproject\main\main.cpp
+1677772191 source:c:\users\user\desktop\gameproject\main\main.cpp
 	<iostream>
-	"../SFML-CodeBlocks/include/Graphics.hpp"
+	<SFML/Graphics.hpp>
+	<Windows.h>
 
 1525812018 c:\users\user\desktop\gameproject\sfml-codeblocks\include\graphics.hpp
 	<SFML/Window.hpp>
