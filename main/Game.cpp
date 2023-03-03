@@ -144,21 +144,7 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (event.type == sf::Event::Resized) {
-                // player.setScale(player.original_scale_x * event.size.width * 0.01,
-                                // player.original_scale_y * event.size.height * 0.01);
-            }
         }
-
-        /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            window.close();
-        }
-        sf::Int32 time_to_sleep = int(1.f / 60) - time;
-        if (time_to_sleep > 0) {
-            sf::sleep(sf::microseconds(time_to_sleep));
-        }*/
-
-
         player.update(time);
         window.clear();
         window.draw(player);

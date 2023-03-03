@@ -14,6 +14,7 @@ int SCREENY = GetSystemMetrics(SM_CYSCREEN);
 #endif
 
 using namespace std;
+using namespace sf;
 
 float TIME;
 
@@ -52,45 +53,116 @@ public:
 	}
 };
 
-class Player {
-    public:
-    float x, y, w, h, dx, dy, speed; //координаты игрока х и у, высота ширина, ускорение (по х и по у), сама скорость
-	vector<bool>dirs; //направление (direction) движения игрока
-	sf::String File; //файл с расширением
-	sf::Image image;//сфмл изображение
-	sf::Texture texture;//сфмл текстура
-	sf::Sprite sprite;//сфмл спрайт
-	sf::Vector2f vec;
-	Player(sf::String F, float X, float Y, float W, float H){  //Конструктор с параметрами(формальными) для класса Player. При создании объекта класса мы будем задавать имя файла, координату Х и У, ширину и высоту
-	    speed = 0.8f;
-		File = F;//имя файла+расширение
-		w = W; h = H;//высота и ширина
-		image.loadFromFile(File);
-		texture.loadFromImage(image);//закидываем наше изображение в текстуру
-		sprite.setTexture(texture);//заливаем спрайт текстурой
-		x = X; y = Y;//координата появления спрайта
-		sprite.setTextureRect(sf::IntRect(0, 0, w, h));  //IntRect - приведение типов
-		sf::Vector2f scale = sprite.getScale();
-        sprite.setScale(scale.x * SCREENX * 0.005, scale.y * SCREENY * 0.0065);
-        vec.x = 0;
-        vec.y = 0;
-        dirs = vector<bool>(4, false);
-	}
-	void update(float time) // функция "оживления" объекта класса. update - обновление. принимает в себя время SFML , вследствие чего работает бесконечно, давая персонажу движение.
-	{
-        if (dirs[0] != dirs[1]) {
-            if (dirs[0]) {vec.x = -speed;}
-            if (dirs[1]) {vec.x = speed;}
+class Player : public sf::Sprite {
+public:
+    sf::Image image;
+    sf::Texture texture;
+    int original_scale_x;
+    int original_scale_y;
+    float CurrentAsset = 0;
+    int Health = 5;
+    bool isAttack = false;
+    bool isRight = true;
+    Player() {
+        image.loadFromFile("../Assets/AnimationSheet_Character.png");
+        texture.loadFromImage(image);
+        this->setTexture(texture);
+        this->setTextureRect(sf::IntRect(0, 0, 32, 32));
+        this->setPosition(10, 10);
+        sf::Vector2f scale = this->getScale();
+        original_scale_x = scale.x;
+        original_scale_y = scale.y;
+        this->setScale(original_scale_x * SCREENX * 0.005,
+            original_scale_y * SCREENY * 0.0065);
+    }
+    void update(float time) {
+        if (!isAttack && Health) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+                CurrentAsset += 0.05 * time;
+                if (CurrentAsset > 4) { CurrentAsset = 0; }
+                this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 64, -32, 32));
+                this->move(-1.2 * time, 0);
+                isRight = false;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+                CurrentAsset += 0.05 * time;
+                if (CurrentAsset > 4) { CurrentAsset = 0; }
+                this->setTextureRect(IntRect(32 * int(CurrentAsset), 64, 32, 32));
+                this->move(1.2 * time, 0);
+                isRight = true;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+                if (isRight) {
+                    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) { CurrentAsset += 0.05 * time; }
+                    if (CurrentAsset > 4) { CurrentAsset = 0; }
+                    this->setTextureRect(IntRect(32 * int(CurrentAsset), 64, 32, 32));
+                }
+                else {
+                    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) { CurrentAsset += 0.05 * time; }
+                    if (CurrentAsset > 4) { CurrentAsset = 0; }
+                    this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 64, -32, 32));
+                }
+                this->move(0, -1.2 * time);
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+                if (isRight) {
+                    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) { CurrentAsset += 0.05 * time; }
+                    if (CurrentAsset > 4) { CurrentAsset = 0; }
+                    this->setTextureRect(IntRect(32 * int(CurrentAsset), 64, 32, 32));
+                }
+                else {
+                    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) { CurrentAsset += 0.05 * time; }
+                    if (CurrentAsset > 4) { CurrentAsset = 0; }
+                    this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 64, -32, 32));
+                }
+                this->move(0, 1.2 * time);
+            }
         }
-        if (dirs[2] != dirs[3]) {
-            if (dirs[2]) {vec.y = -speed;}
-            if (dirs[3]) {vec.y = speed;}
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !isAttack) {
+            CurrentAsset = 0;
+            isAttack = true;
         }
-        sprite.move(vec);
-        vec.x = 0;
-        vec.y = 0;
-        dirs = vector<bool>(4, false);
-	}
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            Health = 0;
+        }
+
+        if (!Health) {
+            CurrentAsset += 0.01 * time;
+            if (isRight) {
+                this->setTextureRect(IntRect(32 * int(CurrentAsset), 224, 32, 32));
+            }
+            else {
+                this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 224, -32, 32));
+            }
+            if (CurrentAsset > 7) {
+                cout << "Die";
+                CurrentAsset = 0;
+                Health = -1;
+            }
+        }
+
+        if (isAttack) {
+            CurrentAsset += 0.06 * time;
+            if (isRight) {
+                this->setTextureRect(IntRect(32 * int(CurrentAsset), 256, 32, 32));
+            }
+            else {
+                this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 256, -32, 32));
+            }
+            if (CurrentAsset > 7) {
+                isAttack = false;
+                CurrentAsset = 0;
+                if (isRight) {
+                    this->setTextureRect(sf::IntRect(0, 0, 32, 32));
+                }
+                else {
+                    this->setTextureRect(sf::IntRect(32, 0, -32, 32));
+                }
+            }
+        }
+    }
 };
 
 FPS GameFPS;
@@ -98,45 +170,26 @@ FPS GameFPS;
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(SCREENX, SCREENY), "GameProject");
-    Player player("../Assets/BlueWitch/run.png", 10.0f, 10.0f, 31.0f, 32.0f);
+    // sf::Style::Fullscreen
+    // sf::RenderWindow window(sf::VideoMode(800, 600), "GameProject");
+    // sf::CircleShape shape(100.f);
+    sf::Clock clock;
+    Player player;
     while (window.isOpen())
     {
-        sf::Clock clock;
-        TIME = clock.getElapsedTime().asMicroseconds();
+        float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
+        time /= 3000;
         sf::Event event;
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-        stack<char>st;
-		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || (sf::Keyboard::isKeyPressed(sf::Keyboard::A)))) {
-            player.dirs[0] = true;
-            st.push('l');
-		}
-		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || (sf::Keyboard::isKeyPressed(sf::Keyboard::D)))) {
-            player.dirs[1] = true;
-            st.push('r');
-		}
-		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || (sf::Keyboard::isKeyPressed(sf::Keyboard::W)))) {
-            player.dirs[2] = true;
-            st.push('u');
-		}
-		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || (sf::Keyboard::isKeyPressed(sf::Keyboard::S)))) { //если нажата клавиша стрелка влево или англ буква А
-            player.dirs[3] = true;
-            st.push('d');
-		}
-		// cout << player.dirs[0] << " " << player.dirs[1] << " " << player.dirs[2] << " " << player.dirs[3] << "\n";
-        /* while (!st.empty()) {
-            cout << st.top() << " ";
-            st.pop();
-        }
-        cout << "\n";*/
-        player.update(TIME);
+        player.update(time);
         GameFPS.update();
         window.clear();
-        window.draw(player.sprite);
+        window.draw(player);
         window.draw(GameFPS.text);
         window.display();
     }
