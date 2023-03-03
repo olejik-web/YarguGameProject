@@ -181,7 +181,7 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-        } 
+        }
         player.update(time);
 
         window.setView(view); // обновление камеры
