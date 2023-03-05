@@ -1,8 +1,6 @@
 ﻿#include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <iostream>
-#include <cmath>
-#include<iomanip>
 #include<Windows.h>
 #include "Maps.h";
 #include "View.h";
@@ -15,7 +13,7 @@ int SCREENY = 600;
 
 class Player : public sf::Sprite {
 public:
-    float x = 50, y = 50;
+    int x = 50, y = 50;
     sf::Image image;
     sf::Texture texture;
     int original_scale_x;
@@ -23,9 +21,6 @@ public:
     float CurrentAsset = 0;
     int Health = 5;
 
-
-
-    
     bool isAttack = false;
     bool isRight = true;
 
@@ -42,28 +37,6 @@ public:
             original_scale_y * SCREENY * 0.0065);*/
     }
 
-    
-    void FindCoordinqtes(int& xt, int& yt) {
-        if (x / 32.0 - int(x / 32) > 0.5) {
-            xt = ceil((float(x) / 32.0));
-        }
-        else {
-            xt = floor((float(x) / 32.0));
-        }
-        if (y / 32.0 - int(y / 32) > 0.5) {
-            yt = ceil((float(y) / 32.0));
-        }
-        else {
-            yt = floor((float(y) / 32.0));
-        }
-    }
-
-    //Взаимодествие с объектами(находит тайл(его кординаты) с которым взаимодействует игрок)
-    void InteractionWithMap() {
-        int xt;
-        int yt;
-        FindCoordinqtes(xt, yt);
-    }
 
 
     void update(float time) {
@@ -93,7 +66,6 @@ public:
                     if (CurrentAsset > 4) { CurrentAsset = 0; }
                     this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 64, -32, 32));
                 }
-                isUp = true;
                 this->move(0, -1.2 * time);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
@@ -107,7 +79,6 @@ public:
                     if (CurrentAsset > 4) { CurrentAsset = 0; }
                     this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 64, -32, 32));
                 }
-                isUp = false;
                 this->move(0, 1.2 * time);
             }
         }
@@ -118,7 +89,7 @@ public:
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            //Health = 0;
+            Health = 0;
         }
 
         if (!Health) {
@@ -156,9 +127,8 @@ public:
             }
         }
 
-        y = this->getPosition().y;
-        x = this->getPosition().x;
-        InteractionWithMap();
+        //y = this->getPosition().y;
+        //x = this->getPosition().x;
         getplayercoordinateforview(this->getPosition().x, this->getPosition().y);
     }
 };
@@ -171,7 +141,7 @@ void GenerateMap(Sprite& s_map,RenderWindow& window) {
             if (TileMap[i][j] == ' ')  s_map.setTextureRect(IntRect(64, 224, 32, 32)); //если встретили символ пробел, то рисуем 1й квадратик
             if (TileMap[i][j] == 's')  s_map.setTextureRect(IntRect(160, 160, 32, 32));//если встретили символ s, то рисуем 2й квадратик
             if ((TileMap[i][j] == '0')) s_map.setTextureRect(IntRect(160, 160, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
-            if ((TileMap[i][j] == 'c')) { s_map.setTextureRect(IntRect(160, 160, 32, 32));  }
+
             s_map.setPosition(j * 32, i * 32);//по сути раскидывает квадратики, превращая в карту. то есть задает каждому из них позицию. если убрать, то вся карта нарисуется в одном квадрате 32*32 и мы увидим один квадрат
 
             /*s_map.setScale(SCREENX * 0.002,
@@ -211,7 +181,13 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-        }
+            if (event.type == sf::Event::Resized) {
+                // player.setScale(player.original_scale_x * event.size.width * 0.01,
+                                // player.original_scale_y * event.size.height * 0.01);
+            }
+        } 
+
+
         player.update(time);
 
         window.setView(view); // обновление камеры
