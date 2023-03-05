@@ -20,6 +20,7 @@ public:
     int original_scale_y;
     float CurrentAsset = 0;
     int Health = 5;
+    float speed = 1.2;
 
     bool isAttack = false;
     bool isRight = true;
@@ -45,14 +46,14 @@ public:
                 CurrentAsset += 0.05 * time;
                 if (CurrentAsset > 4) { CurrentAsset = 0; }
                 this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 64, -32, 32));
-                this->move(-1.2 * time, 0);
+                this->move(-speed * time, 0);
                 isRight = false;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
                 CurrentAsset += 0.05 * time;
                 if (CurrentAsset > 4) { CurrentAsset = 0; }
                 this->setTextureRect(IntRect(32 * int(CurrentAsset), 64, 32, 32));
-                this->move(1.2 * time, 0);
+                this->move(speed * time, 0);
                 isRight = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
@@ -66,7 +67,7 @@ public:
                     if (CurrentAsset > 4) { CurrentAsset = 0; }
                     this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 64, -32, 32));
                 }
-                this->move(0, -1.2 * time);
+                this->move(0, -speed * time);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
                 if (isRight) {
@@ -79,7 +80,7 @@ public:
                     if (CurrentAsset > 4) { CurrentAsset = 0; }
                     this->setTextureRect(IntRect(32 * int(CurrentAsset) + 32, 64, -32, 32));
                 }
-                this->move(0, 1.2 * time);
+                this->move(0, speed * time);
             }
         }
 
