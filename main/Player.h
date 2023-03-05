@@ -45,86 +45,64 @@ public:
         if (Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::W)) // Бег вверх.
         {
             DirPlus(1 << 3); setSpeed(0.1);
-            sprite.setTextureRect(IntRect(78 * int(CurrentFrame), 58, 78, 58));
+            sprite.setTextureRect(IntRect(16 * int(CurrentFrame), 0, w, h));
         }
         if (Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::S)) // Бег вниз.
         {
             DirPlus(1 << 2); setSpeed(0.1);
-            sprite.setTextureRect(IntRect(78 * int(CurrentFrame), 0, 78, 58));
+            sprite.setTextureRect(IntRect(16 * int(CurrentFrame), 0, w, h));
         }
         if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::A)) // Бег вправо.
         {
             DirPlus(1 << 1); setSpeed(0.1);
-            sprite.setTextureRect(IntRect(78 * int(CurrentFrame), 58, 78, 58));
+            sprite.setTextureRect(IntRect(16 * int(CurrentFrame), 16, w, h));
         }
         if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::D)) // Бег влево.
         {
             DirPlus(1 << 0); setSpeed(0.1);
-            sprite.setTextureRect(IntRect(78 * int(CurrentFrame), 0, 78, 58));
+            sprite.setTextureRect(IntRect(16 * int(CurrentFrame), 0, w, h));
         }
-        if (CurrentFrame > 7) CurrentFrame -= 7;
+        if (CurrentFrame >= 4) CurrentFrame -= 4;
     }
 
-    void interactionWithMap(String* TileMap)
+    void interactionWithMap(String* TileMap, float time)
     {
-
         for (int i = 0; i < h; i++)
         {
             if ((dx > 0) && TileMap[int(x + w + dx) / 16][int(y + i) / 16] == '0')
             {
-                x -= dx;
+                x = int(x + dx);
                 break;
             }
             if ((dx < 0) && TileMap[int(x + dx) / 16][int(y + i) / 16] == '0') // Проверка пересикаечения со стеной при перемещении вправо.
             {
-                x -= dx;
+                x = int((x + dx) / 16) * 16 + w;
                 break;
             }
+
+            // Прибавляем смещение к координатам персонажа.
+            if(i == h-1)
+                x += dx * time;
         }
 
         for (int j = 0; j < w; j++)
         {
             if ((dy > 0) && TileMap[int(x + j) / 16][int(y + h + dy) / 16] == '0') // Проверка пересикаечения со стеной при перемещении вниз.
             {
-                y -= dy;
+                y = int(y + dy);
                 break;
             }
             if ((dy < 0) && TileMap[int(x + j) / 16][int(y + dy) / 16] == '0') // Проверка пересикаечения со стеной при перемещении вверх.
             {
-                y -= dy;
+                y = int((y + dy + h) / 16) * 16;
                 break;
             }
+
+            // Прибавляем смещение к координатам персонажа.
+            if(j == w-1)
+                y += dy * time;
         }
 
-        // Движение во внешний угол. Если стена по диагонали, но не по вертикали и горизонтали.
-        if ((dx > 0) && (dy > 0) && TileMap[int(x + w + dx) / 16][int(y + h + dy) / 16] == '0' &&
-            !((dx > 0) && TileMap[int(x + w + dx) / 16][int(y + h) / 16] == '0') && 
-            !((dy > 0) && TileMap[int(x + w) / 16][int(y + h + dy) / 16] == '0'))
-        {
-            x -= dx;
-            y -= dy;
-        }
-        if ((dx > 0) && (dy < 0) && TileMap[int(x + w + dx) / 16][int(y + dy) / 16] == '0' &&
-            !((dx > 0) && TileMap[int(x + w + dx) / 16][int(y + h) / 16] == '0') &&
-            !((dy < 0) && TileMap[int(x) / 16][int(y + dy) / 16] == '0'))
-        {
-            x -= dx;
-            y -= dy;
-        }
-        if ((dx < 0) && (dy > 0) && TileMap[int(x + dx) / 16][int(y + h + dy) / 16] == '0' &&
-            !((dx < 0) && TileMap[int(x + dx) / 16][int(y) / 16] == '0') &&
-            !((dy > 0) && TileMap[int(x + w) / 16][int(y + h + dy) / 16] == '0'))
-        {
-            x -= dx;
-            y -= dy;
-        }
-        if ((dx < 0) && (dy < 0) && TileMap[int(x + dx) / 16][int(y + dy) / 16] == '0' &&
-            !((dx < 0) && TileMap[int(x + dx) / 16][int(y) / 16] == '0') &&
-            !((dy < 0) && TileMap[int(x) / 16][int(y + dy) / 16] == '0'))
-        {
-            x -= dx;
-            y -= dy;
-        }
     }
 
     void update(float time, String* TileMap)
@@ -132,13 +110,9 @@ public:
         dx = ((1 << 0) & dir ? 1 : 0) * speed - ((1 << 1) & dir ? 1 : 0) * speed; // Вычисляем смещение по x через биты dir.
         dy = ((1 << 2) & dir ? 1 : 0) * speed - ((1 << 3) & dir ? 1 : 0) * speed; // Вычисляем смещение по y через биты dir.
 
-        // Прибавляем смещение к координатам персонажа.
-        x += dx * time;
-        y += dy * time;
+        interactionWithMap(TileMap, time);
 
-        //speed = 0; // Сбрасываем скорость.
         sprite.setPosition(x, y);
-        interactionWithMap(TileMap);
     }
 
     float getPlayerCoordinateX() { return x; }
