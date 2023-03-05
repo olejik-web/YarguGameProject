@@ -181,13 +181,9 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (event.type == sf::Event::Resized) {
-                // player.setScale(player.original_scale_x * event.size.width * 0.01,
-                                // player.original_scale_y * event.size.height * 0.01);
-            }
-        } 
+        }
 
-
+    }
         player.update(time);
 
         window.setView(view); // обновление камеры
