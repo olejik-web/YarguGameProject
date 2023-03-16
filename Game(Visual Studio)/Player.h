@@ -19,6 +19,7 @@ public:
     Image image;
     Texture texture;
 
+    pair<int, int> CurrentTile;
 
     bool isAttack = false;
     bool isRight = true;

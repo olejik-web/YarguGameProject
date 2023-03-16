@@ -17,7 +17,6 @@ int SCREENX = 1000;
 int SCREENY = 600;
 
 
-
 void GenerateMap(Sprite& s_map,RenderWindow& window,Player& play, Enemy& Enemy ,float& time) {
     for (int i = 0; i < HEIGHT_MAP; i++)
         for (int j = 0; j < WIDTH_MAP; j++)
@@ -51,8 +50,9 @@ int main()
 
 
     sf::Clock clock;
-    Player player("Assets/AnimationSheet_Character.png",50,50,32,32);
-    Ghost ghost("Assets/AnimationSheet_Character.png", 3 * 32, 9 * 32, 32, 32);
+    Player player("Assets/AnimationSheet_Character.png",32,32,32,32);
+    Ghost ghost("Assets/gothicvania patreon collection/Ghost-Files/PNG/ghost-shriek.png", 3 * 32, 9 * 32,0,0, 64, 80);
+    //Enemy enemy("Assets/AnimationSheet_Character.png", 3 * 32, 1 * 32, 32, 32);
 
     while (window.isOpen())
     {

@@ -28,7 +28,7 @@ public:
     float NeedChangeWay = 0;
 
     //vector<int> d();
-    stack<pair<int, int> >q1;
+    stack<pair<int, int> >Ways;
 
 
     Enemy(string F, float X, float Y, float W, float H)
@@ -62,12 +62,8 @@ public:
             used[y][x] = 1;
             for (int i = 0; i < dx.size(); i++) {
                 int nx = x + dx[i], ny = y + dy[i];
-                //cout << TileMap[ny][nx] << '\n';
                 
                 if (nx >= 0 && ny >= 0 && ny < HEIGHT_MAP && nx < WIDTH_MAP && !used[ny][nx] && TileMap[ny][nx] != '0') {
-                    if (ny == 7 && nx != 12) {
-                        cout << "1\n";
-                    }
                     q.push({ ny,nx });
                     used[ny][nx] = 1;
                     put[ny][nx] = { y,x };
@@ -75,10 +71,17 @@ public:
             }
         }
 
+        for (int i = 0; i < HEIGHT_MAP; i++) {
+            for (int j = 0; j < WIDTH_MAP; j++) {
+                cout << '(' << put[i][j].first << ' ' << put[i][j].second << ')' << ' ';
+            }
+            cout << '\n';
+        }
+
         pair<int, int> buffer = put[fin1][fin2];
-        if(buffer.first != -1 && buffer.second != -1){ q1.push({ fin1,fin2 }); }
+        if(buffer.first != -1 && buffer.second != -1){ Ways.push({ fin1,fin2 }); }
         while (buffer.first != -1 && buffer.second != -1) {
-            q1.push(buffer);
+            Ways.push(buffer);
             buffer = put[buffer.first][buffer.second];
         }
     }
@@ -91,9 +94,9 @@ public:
     }
 
     void move(float time) {
-        if (!isMove && !q1.empty()) {
-            CurrentWay = q1.top();
-            q1.pop();
+        if (!isMove && !Ways.empty()) {
+            CurrentWay = Ways.top();
+            Ways.pop();
             isMove = true;
         }
         if(CurrentTile != CurrentWay && isMove) {
@@ -102,8 +105,8 @@ public:
             calcSpriteMove(time);
             
         }
-        if (q1.size() > 0) {
-            CurrentWay = q1.top();
+        if (Ways.size() > 0) {
+            CurrentWay = Ways.top();
         }
         
 
@@ -111,14 +114,14 @@ public:
 
     void update(float time,Player& player, sf::String TileMap[]) {
         if (NeedChangeWay <= 0) {
-            cout << "change\n";
+            
             isMove = false;  
             FindWay(player, TileMap, CurrentTile.first, CurrentTile.second, player.CurrentTile.first, player.CurrentTile.second);
-            cout << CurrentWay.first << ' ' << CurrentWay.second << ' ' << CurrentTile.first << ' ' << CurrentTile.second << '\n';
+            
             NeedChangeWay = 5;
         }
         move(time);
-        //cout << CurrentWay.first << ' ' << CurrentWay.second << ' ' << CurrentTile.first << ' ' << CurrentTile.second << '\n';
+        cout << CurrentTile.first << ' ' << CurrentTile.second << '\n';
         NeedChangeWay -= 0.1 * time;
     }
 };
