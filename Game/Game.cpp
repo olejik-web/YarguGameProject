@@ -9,6 +9,7 @@
 #include "Player.h";
 //#include "Enemy.h";
 #include "EnemyTest.h";
+#include "Bullet.h"
 
 using namespace sf;
 using namespace std;
@@ -53,6 +54,8 @@ int main()
     sf::Clock clock;
     Player player("Assets/AnimationSheet_Character.png",50,50,32,32);
     Ghost ghost("Assets/AnimationSheet_Character.png", 3 * 32, 9 * 32, 32, 32);
+    Bullet bullet("Assets/Just_arrow.png",50, 50, 0.5);
+
 
     while (window.isOpen())
     {
@@ -73,9 +76,11 @@ int main()
         GenerateMap(s_map, window, player, ghost, time); // Генерация карты
         player.update(time, TileMap, view);
         ghost.update(time, player,TileMap);
+        bullet.Update(time);
         
         window.draw(player.sprite);
         window.draw(ghost.sprite);
+        window.draw(bullet.sprite);
         window.display();
     }
     return 0;

@@ -35,5 +35,8 @@
     <ClInclude Include="EnemyTest.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
