@@ -60,7 +60,7 @@ public:
         float dlina = sqrt(dx * dx + dy * dy);
         dx /= dlina;
         dy /= dlina;
-        if (dx != 0 && dy != 0) {
+        if (dx != 0 || dy != 0) {
             sprite.move(dx * speed * time, dy * speed * time);
         }
     }
