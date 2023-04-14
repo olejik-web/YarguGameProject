@@ -12,18 +12,20 @@
 using namespace std;
 using namespace sf;
 
-class Player {
+class Tile {
 private:
     Sprite SpriteTile;
-    Texture image;
+    Texture texture;
+    Image image;
     IntRect rect;
     pair<int, int> pos;
 public:
-    Player(pair<int, int> pos = {0, 0}) {
-        image.loadFromFile("player.png");
-        SpriteTile.setTexture(image);
-        rect = SpriteTile.getTextureRect();
-        rect.left = pos.first;
-        rect.top = pos.second;
+    Tile(pair<int, int> pos = {0, 0}) {
+        pos = pos;
+        SpriteTile.setPosition((float)pos.first, (float)pos.second);
+    }
+    Sprite get_sprite() {
+        cout << texture.getSize().x << " " << texture.getSize().y << "\n";
+        return SpriteTile;
     }
 };
