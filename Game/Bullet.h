@@ -35,9 +35,14 @@ public:
         sprite.setPosition(x, y);
     }
 
-    void Update(float& time) {
+    void Update(float& time, float X, float Y) {
         if (isFired) {
             Move(time);
+        }
+        else
+        {
+            x = X;
+            y = Y;
         }
         Fire();
     }

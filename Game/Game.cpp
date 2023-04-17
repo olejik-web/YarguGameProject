@@ -76,7 +76,7 @@ int main()
         GenerateMap(s_map, window, player, ghost, time); // Генерация карты
         player.update(time, TileMap, view);
         ghost.update(time, player,TileMap);
-        bullet.Update(time);
+        bullet.Update(time, player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
         
         window.draw(player.sprite);
         window.draw(ghost.sprite);
