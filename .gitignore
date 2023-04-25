@@ -2,6 +2,7 @@ Game/.vs/
 Game/Debug/
 Game/x64/
 Game/Game.o
+Game/Game.exe
 Game/Game.vcxproj
 Game/Game.vcxproj.filters
 Game/Game.vcxproj.user
@@ -17,3 +18,4 @@ Game/sfml-system-2.dll
 Game/sfml-system-d-2.dll
 Game/sfml-window-2.dll
 Game/sfml-window-d-2.dll
+SFML-2.5.1/
