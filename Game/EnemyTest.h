@@ -43,7 +43,7 @@ public:
 
     Ghost(string F, float X, float Y, float W, float H):Enemy(F,X,Y,W,H){}
 
-    void teleport(sf::String TileMap[]) {
+    void teleport(vector<vector<char> > TileMap) {
         //Временно
         int Tx = (rand() % WIDTH_MAP);
         int Ty = (rand() % HEIGHT_MAP);
@@ -65,7 +65,7 @@ public:
         }
     }
 
-    void update(float& time,Player &player,sf::String TileMap[]) {
+    void update(float& time,Player &player,vector<vector<char> > TileMap) {
         rand();
         move(time, player);
         if (sprite.getGlobalBounds().intersects(player.sprite.getGlobalBounds())) {

@@ -5,6 +5,9 @@
 using namespace std;
 using namespace sf;
 
+const int HEIGHT_MAP = 56;//размер карты высота
+const int WIDTH_MAP = 56;//размер карты ширина 
+const int TILE_SIZE = 32;
 
 class Player {
 private:
@@ -102,7 +105,7 @@ public:
         }
     }
 
-    void interactionWithMap(float& time, sf::String TileMap[])
+    void interactionWithMap(float& time, vector<vector<char> > TileMap)
     {
         for (int i = 0; i < h; i++)
         {
@@ -147,7 +150,7 @@ public:
 
     }
 
-    void update(float& time, sf::String TileMap[],View& view)
+    void update(float& time, vector<vector<char> > TileMap,View& view)
     {
 
 
