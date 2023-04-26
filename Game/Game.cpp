@@ -25,6 +25,8 @@ public:
         clock.restart();
     }
     void run() {
+        float time = clock.getElapsedTime().asMicroseconds();
+        clock.restart();
         while (screen.isOpen()) {
             Event event;
             while (screen.pollEvent(event)) {
@@ -33,8 +35,7 @@ public:
                 }
             }
             screen.clear(Color::Black);
-            level.run(screen);
-            // screen.draw(debug("Hello, Debug!"));
+            level.run(screen, time);
             screen.display();
         }
     }
