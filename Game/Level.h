@@ -12,6 +12,8 @@
 #include "tile.h"
 #include "player.h"
 #include "debug.h"
+#include "weapon.h"
+#include "ui.h"
 #include <iomanip>
 #include <memory>
 #include <fstream>
@@ -104,11 +106,27 @@ private:
     vector< vector<int> >GrassMap;
     vector< vector<int> >ObjectsMap;
     View camera;
+    Clock clock;
+    vector<Weapon>weapons;
+    UI ui;
 public:
     Level() {
         level_tiles = vector<Tile>(0);
         camera.zoom(2.5f);
         this->create_map();
+        clock.restart();
+    }
+    void create_attack() {
+        Weapon weapon(player);
+        weapon.set_visibility(true);
+        weapons.push_back(weapon);
+    }
+    void destroy_attack() {
+        vector<Weapon>tmp_vector;
+        for (int i=1; i<weapons.size(); i++) {
+            tmp_vector.push_back(weapons[i]);
+        }
+        weapons = tmp_vector;
     }
     void load_textures() {
         ROCK_TEXTURE.loadFromFile("rock.png");
@@ -224,6 +242,10 @@ public:
         if (player.isVisible()) {
             screen.draw(player);
         }
+        for (auto weapon : weapons) {
+            screen.draw(weapon);
+            // weapon.draw_shape(screen);
+        }
         for (int i=0; i<obstacle_tiles.size(); i++) {
             if (obstacle_tiles[i].isVisible() &&
                 obstacle_tiles[i].get_hitbox().top > player.get_hitbox().top) {
@@ -245,7 +267,15 @@ public:
         // camera.set_stop(true);
         // player.cout_hitbox();
         // player.cout_rect();
-        player.update(time);
+        player.update(time, clock);
+        if (player.get_nead_create_attack()) {
+            this->create_attack();
+            player.set_nead_create_attack(false);
+        }
+        if (player.get_nead_destroy_attack()) {
+            this->destroy_attack();
+            player.set_nead_destroy_attack(false);
+        }
         FloatRect player_rect = player.getGlobalBounds();
         float center_x = player_rect.left + player_rect.width / 2;
         float center_y = player_rect.top + player_rect.height / 2;
@@ -262,7 +292,10 @@ public:
         rect.setSize(Vector2f(player_box.width, player_box.height));
         rect.setPosition(Vector2f(player_box.left, player_box.top));
         rect.setFillColor(Color::Red);
-        screen.draw(rect);
+        ui.display(player, screen);
+        // player.setTexture(PLAYER_ANIM_TEXTURES["up_attack"][0]);
+        // player.get_status();
+        // player.cooldowns(clock);
         // screen.draw(debug())
     }
 };

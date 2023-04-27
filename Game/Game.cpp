@@ -10,6 +10,7 @@
 #include "Level.h"
 #include "tile.h"
 #include "player.h"
+#include "Weapon.h"
 
 using namespace sf;
 using namespace std;
@@ -17,8 +18,8 @@ using namespace std;
 class Game {
 private:
     RenderWindow screen;
-    Clock clock;
     Level level;
+    Clock clock;
 public:
     Game() {
         screen.create(VideoMode(WIDTH, HEIGTH), "Our Game");
@@ -45,6 +46,7 @@ int main()
 {
     DebugFont.loadFromFile("Samson.ttf");
     Game game;
+    // load_player_anim_textures();
     game.run();
     return 0;
 }
