@@ -17,7 +17,20 @@ using namespace std;
 int SCREENX = 1000;
 int SCREENY = 600;
 
+vector<Bullet*> bullets;
 
+void Bullet_intersect(Sprite& s_map)
+{
+    for (int i = 0; i < bullets.size(); i++)
+    {
+        if (bullets[i]->sprite.getGlobalBounds().intersects(s_map.getGlobalBounds()))
+        {
+            delete(bullets[i]);
+            bullets.erase(bullets.begin() + i);
+            i--;
+        }
+    }
+}
 
 void GenerateMap(Sprite& s_map,RenderWindow& window,Player& play, Enemy& Enemy ,float& time) {
     for (int i = 0; i < HEIGHT_MAP; i++)
@@ -29,6 +42,10 @@ void GenerateMap(Sprite& s_map,RenderWindow& window,Player& play, Enemy& Enemy ,
             if ((TileMap[i][j] == '+')) { s_map.setTextureRect(IntRect(0, 160, 32, 32));  }
             s_map.setPosition(j * 32, i * 32);//по сути раскидывает квадратики, превращая в карту. то есть задает каждому из них позицию. если убрать, то вся карта нарисуется в одном квадрате 32*32 и мы увидим один квадрат
             
+            if (TileMap[i][j] == '0')
+            {
+                Bullet_intersect(s_map);
+            }
 
             window.draw(s_map);//рисуем квадратики на экран
         }
@@ -54,7 +71,6 @@ int main()
     sf::Clock clock;
     Player player("Assets/AnimationSheet_Character.png",50,50,32,32);
     Ghost ghost("Assets/AnimationSheet_Character.png", 3 * 32, 9 * 32, 32, 32);
-    Bullet bullet("Assets/Just_arrow.png",50, 50, 0.5);
 
 
     while (window.isOpen())
@@ -67,6 +83,11 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (player.isShoot)
+            {
+                bullets.push_back(new Bullet(player.getX(), player.getY()));
+                player.isShoot = false;
+            }
         }
 
         
@@ -76,11 +97,14 @@ int main()
         GenerateMap(s_map, window, player, ghost, time); // Генерация карты
         player.update(time, TileMap, view);
         ghost.update(time, player,TileMap);
-        bullet.Update(time, player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
         
         window.draw(player.sprite);
         window.draw(ghost.sprite);
-        window.draw(bullet.sprite);
+        for (int i = 0; i < bullets.size(); i++)
+        {
+            bullets[i]->Update(time);
+            window.draw(bullets[i]->sprite);
+        }
         window.display();
     }
     return 0;

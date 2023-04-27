@@ -19,7 +19,7 @@ public:
     Image image;
     Texture texture;
 
-
+    bool isShoot = false;
     bool isAttack = false;
     bool isRight = true;
     int Health = 5;
@@ -70,6 +70,10 @@ public:
                 isRight = true;
                 DirPlus(1 << 0); setSpeed(0.3);
                 sprite.setTextureRect(IntRect(32 * int(CurrentFrame), 64, 32, 32));
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Space)) // Стрельба.
+            {
+                isShoot = true;
             }
             if (CurrentFrame >= 4) CurrentFrame -= 4;
         }
@@ -155,7 +159,7 @@ public:
         dy = ((1 << 2) & dir ? 1 : 0) * speed - ((1 << 3) & dir ? 1 : 0) * speed; // Вычисляем смещение по y через биты dir.
         DirClear();
         
-        view.setCenter(getPlayerCoordinateX(), getPlayerCoordinateY());
+        view.setCenter(x, y);
 
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::G) && !isAttack) { //ь=булевская переменая что герой аттакует
@@ -169,6 +173,6 @@ public:
         Attack(time);
     }
 
-    float getPlayerCoordinateX() { return x; }
-    float getPlayerCoordinateY() { return y; }
+    float getX() { return x; }
+    float getY() { return y; }
 };
