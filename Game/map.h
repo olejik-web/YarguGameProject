@@ -10,6 +10,9 @@
 
 using namespace std;
 
+int HEIGHT_MAP = 128;//размер карты высота
+int WIDTH_MAP = 128;//размер карты ширина 
+
 class qmap
 {
 private:
@@ -18,7 +21,7 @@ private:
     vector<vector<char> > mainMap;
     int minCntRoom = 7, maxCntRoom = 15;
     int sqrtCntRoom = 4; //  ол-во комнат в высоты и/или в ширину.
-    int roomHieght = 8, roomWidth = 8; // ¬ысота и ширина комнат.
+    int roomHieght = 16, roomWidth = 16; // ¬ысота и ширина комнат.
     int mapHieght = roomHieght * sqrtCntRoom * 2 - roomHieght;
     int mapWidth = roomWidth * sqrtCntRoom * 2 - roomWidth;
     int percentageOfPaths = 20; // Ўанс удалени€ коридора, при условии, что кол-во доступных комнат не изменитс€.
@@ -247,13 +250,6 @@ private:
         }
     }
 
-    pair<int, int> getSpawn()
-    {
-        if (Spawn.first == -1 && Spawn.second == -1)
-            makeSpawn();
-        return Spawn;
-    }
-
     //////////// —лучайно сгенерировать комнаты ////////////
     void randomRoom()
     {
@@ -263,6 +259,13 @@ private:
     }
 
 public:
+
+    pair<int, int> getSpawn()
+    {
+        if (Spawn.first == -1 && Spawn.second == -1)
+            makeSpawn();
+        return Spawn;
+    }
 
     qmap()
     {
@@ -303,6 +306,8 @@ public:
     //////////// ¬ случае, если нужно обновить карту, после задание параметров. ////////////
     void initMap()
     {
+        HEIGHT_MAP = mapHieght;//размер карты высота
+        WIDTH_MAP = mapWidth;//размер карты ширина 
         while (true)
         {
             randomRoom(); // —оздать комнаты в случайных местах.
@@ -352,7 +357,7 @@ public:
         {
             for (int j = 0; j < sqrtCntRoom * 2 - 1; j++)
             {
-                if (mapPaths[i][j] == 'r' || mapPaths[i][j] == 's')
+                if (mapPaths[i][j] == 'r')
                 {
                     int num = rand() % rooms.size();
                     vector<string>& RandRoom = rooms[num];
@@ -364,6 +369,22 @@ public:
                         }
                     }
                 }
+
+                if (mapPaths[i][j] == 's')
+                {
+                    int num = rand() % rooms.size();
+                    vector<string>& RandRoom = rooms[num];
+                    for (int i1 = 0; i1 < roomHieght; i1++)
+                    {
+                        for (int j1 = 0; j1 < roomWidth; j1++)
+                        {
+                            mainMap[i * roomHieght + i1][j * roomWidth + j1] = RandRoom[i1][j1];
+                        }
+                    }
+
+                    mainMap[i * roomHieght + roomHieght / 2][j * roomWidth + roomWidth / 2] = '0';
+                }
+
                 if (mapPaths[i][j] == '-')
                 {
                     int num = rand() % corG.size();
@@ -387,6 +408,33 @@ public:
                             mainMap[i * roomHieght + i1][j * roomWidth + j1] = RandRoom[i1][j1];
                         }
                     }
+                }
+            }
+        }
+    }
+
+    // ƒобавить свободный проход соответствующий тунелю.
+    void addDoor()
+    {
+        for (int i = 0; i < sqrtCntRoom * 2 - 1; i++)
+        {
+            for (int j = 0; j < sqrtCntRoom * 2 - 1; j++)
+            {
+                if (mapPaths[i][j] == '-')
+                {
+                    mainMap[i * roomHieght + roomHieght / 2][j * roomWidth - 1] = ' ';
+                    mainMap[i * roomHieght + roomHieght / 2 - 1][j * roomWidth - 1] = ' ';
+
+                    mainMap[i * roomHieght + roomHieght / 2][(j + 1) * roomWidth] = ' ';
+                    mainMap[i * roomHieght + roomHieght / 2 - 1][(j + 1) * roomWidth] = ' ';
+                }
+                if (mapPaths[i][j] == '|')
+                {
+                    mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2] = ' ';
+                    mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = ' ';
+
+                    mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2] = ' ';
+                    mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 - 1] = ' ';
                 }
             }
         }

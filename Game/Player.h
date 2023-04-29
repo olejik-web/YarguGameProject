@@ -1,12 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <map>
 
 using namespace std;
 using namespace sf;
 
-const int HEIGHT_MAP = 56;//размер карты высота
-const int WIDTH_MAP = 56;//размер карты ширина 
 const int TILE_SIZE = 32;
 
 class Player {
@@ -39,10 +38,38 @@ public:
         sprite.setPosition(x, y);
     }
 
+    Player(string F, pair<int, int> coordSpawn, int roomWidth, int roomHieght, float W, float H)
+    {
+        int X = coordSpawn.first;
+        int Y = coordSpawn.second;
+
+        x = 50;
+        y = 50;
+
+        if (X > 0 && Y > 0)
+        {
+            x = (Y) * 2 * roomWidth * 32 + 50;
+            y = (X) * 2 * roomHieght * 32 + 50;
+        }
+        else if (X > 0)
+            y = (X) * 2 * roomHieght * 32 + 50;
+        else if (Y > 0)
+            x = (Y) * 2 * roomWidth * 32 + 50;
+
+        File = F;
+        w = W; h = H;
+        image.loadFromFile(File);
+        texture.loadFromImage(image);
+        sprite.setTexture(texture);
+
+        sprite.setTextureRect(IntRect(w, h, w, h));
+        sprite.setPosition(x, y);
+    }
+
     void DirClear() { dir = 0; } // Забыть направление, в котором бежал персонаж.
     void DirPlus(int n) { dir |= n; } // Сложение направление.
 
-    void setSpeed(float n) { speed = n; } // Задание скорости передвижения персонажа.
+    void setSpeed(float n) { speed = 3; } // Задание скорости передвижения персонажа.
 
     void move() // Обновление фреймов и вычисление нажатой клавиши перемещения.
     {
@@ -51,7 +78,7 @@ public:
                 Keyboard::isKeyPressed(Keyboard::Right)||
                 Keyboard::isKeyPressed(Keyboard::Up) ||
                 Keyboard::isKeyPressed(Keyboard::Down)) // Проверка нажатия клавиши.
-                CurrentFrame += 0.01; // Проигрывания анимации, если клавиша нажата.
+                CurrentFrame += 0.05; // Проигрывания анимации, если клавиша нажата.
             if (Keyboard::isKeyPressed(Keyboard::Up)) // Бег вверх.
             {
                 DirPlus(1 << 3); setSpeed(0.3);
@@ -174,4 +201,7 @@ public:
 
     float getPlayerCoordinateX() { return x; }
     float getPlayerCoordinateY() { return y; }
+
+    void setPlayerCoordinateX(float X) { x = X; }
+    void setPlayerCoordinateY(float Y) { y = Y; }
 };

@@ -11,6 +11,9 @@
 //#include "Enemy.h";
 #include "EnemyTest.h";
 #include "Bullet.h"
+#include <string>
+
+#include <sstream>
 
 using namespace sf;
 using namespace std;
@@ -41,15 +44,18 @@ int main()
     std::srand(std::time(nullptr));
     qmap Map;
     Map.initMap();
-    Map.printPaths();
     Map.initMainMap();
-    Map.printMap();
+    Map.addDoor();
 
     TileMap = Map.getMainMap();
 
     sf::RenderWindow window(sf::VideoMode(SCREENX, SCREENY), "GameProject");
     view.reset(FloatRect(0, 0, SCREENX, SCREENY));
 
+    Font font;
+    font.loadFromFile("KarmaFuture.ttf");
+    Text textCoord("", font, 16);
+    Text textSpawnPoint("", font, 16);
 
     Image map_image;//объект изображения для карты
     map_image.loadFromFile("Assets/Kings and Pigs/Sprites/14-TileSets/Terrain (32x32).png");//загружаем файл для карты
@@ -58,14 +64,14 @@ int main()
     Sprite s_map;//создаём спрайт для карты
     s_map.setTexture(tmap);//заливаем текстуру спрайтом
 
-
-
-
     sf::Clock clock;
-    Player player("Assets/AnimationSheet_Character.png", 50, 50, 32, 32);
+    int X = Map.getSpawn().first;
+    int Y = Map.getSpawn().second;
+    //Player player("Assets/AnimationSheet_Character.png", 50, 50, 32, 32);
+    Player player("Assets/AnimationSheet_Character.png", 
+        Map.getSpawn(), Map.getRoomWidth(), Map.getRoomHieght(), 32, 32);
     Ghost ghost("Assets/AnimationSheet_Character.png", 3 * 32, 9 * 32, 32, 32);
     Bullet bullet("Assets/Just_arrow.png", 50, 50, 0.5);
-
 
     while (window.isOpen())
     {
@@ -75,7 +81,7 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
         }
 
@@ -91,6 +97,24 @@ int main()
         window.draw(player.sprite);
         window.draw(ghost.sprite);
         window.draw(bullet.sprite);
+
+        std::ostringstream playerCoordX;
+        playerCoordX << player.getPlayerCoordinateX();
+        std::ostringstream playerCoordY;
+        playerCoordY << player.getPlayerCoordinateY();
+
+        std::ostringstream SpawnPointX;
+        SpawnPointX << Map.getSpawn().first;
+        std::ostringstream SpawnPointY;
+        SpawnPointY << Map.getSpawn().second;
+
+        textCoord.setString("Score " + playerCoordX.str() + " " + playerCoordY.str());
+        textCoord.setPosition(view.getCenter().x - SCREENX/2, view.getCenter().y - SCREENY/2);
+        textSpawnPoint.setString("Spawn coord: " + SpawnPointX.str() + " " + SpawnPointY.str());
+        textSpawnPoint.setPosition(view.getCenter().x - SCREENX / 2, view.getCenter().y - SCREENY / 2 + 32);
+        window.draw(textCoord);
+        window.draw(textSpawnPoint);
+
         window.display();
     }
     return 0;
