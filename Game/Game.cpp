@@ -11,6 +11,7 @@
 #include "tile.h"
 #include "player.h"
 #include "Weapon.h"
+#include "enemy.h"
 
 using namespace sf;
 using namespace std;
@@ -36,7 +37,7 @@ public:
                 }
             }
             screen.clear(Color::Black);
-            level.run(screen, time);
+            level.run(screen, time, clock);
             screen.display();
         }
     }
@@ -46,7 +47,6 @@ int main()
 {
     DebugFont.loadFromFile("Samson.ttf");
     Game game;
-    // load_player_anim_textures();
     game.run();
     return 0;
 }

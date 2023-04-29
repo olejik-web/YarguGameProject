@@ -8,6 +8,7 @@
 #include "settings.h"
 #include "tile.h"
 #include "Level.h"
+#include "entity.h"
 #include <iostream>
 #include <vector>
 #include <map>
@@ -69,7 +70,7 @@ string str_replace(string main_str, string old_str, string new_str) {
     return main_str;
 }
 
-class Player : public GameObject {
+class Player : public Entity {
 private:
     Vector2f direction;
     vector<Tile>obstacle_tiles;
@@ -125,10 +126,13 @@ public:
     bool get_can_switch_magic() {
         return can_switch_magic;
     }
+    void edit_with_time(float time) {
+        speed *= time;
+        animation_speed *= time;
+    }
     Player(string obj_name = "None", pair<int, int> pos = {0, 0},
             vector<Tile> obstacle_tiles = {}):
-        GameObject(obj_name, pos) {
-        speed = 1.2;
+        Entity(obj_name, pos) {
         obstacle_tiles = obstacle_tiles;
         status = "down";
         frame_index = 0;
@@ -145,7 +149,7 @@ public:
         stats["energy"] = 60;
         stats["attack"] = 10;
         stats["magic"] = 4;
-        stats["speed"] = 1.2;
+        stats["speed"] = 2;
         magic_datas = vector<MagicData>(2);
         magic_datas[0] = MagicData();
         magic_datas[0].name = "flame";
@@ -446,5 +450,8 @@ public:
     }
     FloatRect get_hitbox() {
         return hitbox;
+    }
+    void set_speed(float value) {
+        speed = value;
     }
 };

@@ -11,6 +11,7 @@
 #include "settings.h"
 #include "tile.h"
 #include "player.h"
+#include "enemy.h"
 #include "debug.h"
 #include "weapon.h"
 #include "ui.h"
@@ -26,6 +27,7 @@ Texture PLAYER_TEXTURE;
 Texture GROUND_TEXTURE;
 vector<Texture> GRASS_TEXTURES(3);
 vector<Texture> OBJECT_TEXTURES(21);
+map<string, map<string, vector<Texture>> > ENEMY_ANIM_TEXTURES;
 
 vector< vector<int> > load_map_from_file(string path) {
     vector< vector<int> >loaded_map(0, vector<int>(0));
@@ -96,19 +98,25 @@ public:
     }
 };*/
 
+Texture main_texture;
+
 class Level {
 private:
     vector<Tile>level_tiles;
     vector<Tile>obstacle_tiles;
     Player player;
+    Entity enemy;
     Sprite Ground;
     vector< vector<int> >BoundaryMap;
     vector< vector<int> >GrassMap;
     vector< vector<int> >ObjectsMap;
+    vector< vector<int> >EntitiesMap;
     View camera;
     Clock clock;
     vector<Weapon>weapons;
+    vector<Enemy>enemys;
     UI ui;
+    bool a = false;
 public:
     Level() {
         level_tiles = vector<Tile>(0);
@@ -156,6 +164,61 @@ public:
         OBJECT_TEXTURES[18].loadFromFile("graphics/objects/18.png");
         OBJECT_TEXTURES[19].loadFromFile("graphics/objects/19.png");
         OBJECT_TEXTURES[20].loadFromFile("graphics/objects/20.png");
+        ENEMY_ANIM_TEXTURES["bamboo"]["idle"] = vector<Texture>(4);
+        ENEMY_ANIM_TEXTURES["bamboo"]["idle"][0].loadFromFile("graphics/monsters/bamboo/idle/0.png");
+        ENEMY_ANIM_TEXTURES["bamboo"]["idle"][1].loadFromFile("graphics/monsters/bamboo/idle/1.png");
+        ENEMY_ANIM_TEXTURES["bamboo"]["idle"][2].loadFromFile("graphics/monsters/bamboo/idle/2.png");
+        ENEMY_ANIM_TEXTURES["bamboo"]["idle"][3].loadFromFile("graphics/monsters/bamboo/idle/3.png");
+        ENEMY_ANIM_TEXTURES["bamboo"]["move"] = vector<Texture>(4);
+        ENEMY_ANIM_TEXTURES["bamboo"]["move"][0].loadFromFile("graphics/monsters/bamboo/move/0.png");
+        ENEMY_ANIM_TEXTURES["bamboo"]["move"][1].loadFromFile("graphics/monsters/bamboo/move/1.png");
+        ENEMY_ANIM_TEXTURES["bamboo"]["move"][2].loadFromFile("graphics/monsters/bamboo/move/2.png");
+        ENEMY_ANIM_TEXTURES["bamboo"]["move"][3].loadFromFile("graphics/monsters/bamboo/move/3.png");
+        ENEMY_ANIM_TEXTURES["bamboo"]["attack"] = vector<Texture>(1);
+        ENEMY_ANIM_TEXTURES["bamboo"]["attack"][0].loadFromFile("graphics/monsters/bamboo/attack/0.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["idle"] = vector<Texture>(6);
+        ENEMY_ANIM_TEXTURES["raccoon"]["idle"][0].loadFromFile("graphics/monsters/raccoon/idle/0.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["idle"][1].loadFromFile("graphics/monsters/raccoon/idle/1.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["idle"][2].loadFromFile("graphics/monsters/raccoon/idle/2.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["idle"][3].loadFromFile("graphics/monsters/raccoon/idle/3.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["idle"][4].loadFromFile("graphics/monsters/raccoon/idle/4.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["idle"][5].loadFromFile("graphics/monsters/raccoon/idle/5.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["move"] = vector<Texture>(5);
+        ENEMY_ANIM_TEXTURES["raccoon"]["move"][0].loadFromFile("graphics/monsters/raccoon/move/0.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["move"][1].loadFromFile("graphics/monsters/raccoon/move/1.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["move"][2].loadFromFile("graphics/monsters/raccoon/move/2.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["move"][3].loadFromFile("graphics/monsters/raccoon/move/3.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["move"][4].loadFromFile("graphics/monsters/raccoon/move/4.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["attack"] = vector<Texture>(4);
+        ENEMY_ANIM_TEXTURES["raccoon"]["attack"][0].loadFromFile("graphics/monsters/raccoon/attack/0.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["attack"][1].loadFromFile("graphics/monsters/raccoon/attack/1.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["attack"][2].loadFromFile("graphics/monsters/raccoon/attack/2.png");
+        ENEMY_ANIM_TEXTURES["raccoon"]["attack"][3].loadFromFile("graphics/monsters/raccoon/attack/3.png");
+        ENEMY_ANIM_TEXTURES["spirit"]["idle"] = vector<Texture>(4);
+        ENEMY_ANIM_TEXTURES["spirit"]["idle"][0].loadFromFile("graphics/monsters/spirit/idle/0.png");
+        ENEMY_ANIM_TEXTURES["spirit"]["idle"][1].loadFromFile("graphics/monsters/spirit/idle/1.png");
+        ENEMY_ANIM_TEXTURES["spirit"]["idle"][2].loadFromFile("graphics/monsters/spirit/idle/2.png");
+        ENEMY_ANIM_TEXTURES["spirit"]["idle"][3].loadFromFile("graphics/monsters/spirit/idle/3.png");
+        ENEMY_ANIM_TEXTURES["spirit"]["move"] = vector<Texture>(4);
+        ENEMY_ANIM_TEXTURES["spirit"]["move"][0].loadFromFile("graphics/monsters/spirit/move/0.png");
+        ENEMY_ANIM_TEXTURES["spirit"]["move"][1].loadFromFile("graphics/monsters/spirit/move/1.png");
+        ENEMY_ANIM_TEXTURES["spirit"]["move"][2].loadFromFile("graphics/monsters/spirit/move/2.png");
+        ENEMY_ANIM_TEXTURES["spirit"]["move"][3].loadFromFile("graphics/monsters/spirit/move/3.png");
+        ENEMY_ANIM_TEXTURES["spirit"]["attack"] = vector<Texture>(1);
+        ENEMY_ANIM_TEXTURES["spirit"]["attack"][0].loadFromFile("graphics/monsters/spirit/attack/0.png");
+        ENEMY_ANIM_TEXTURES["squid"]["idle"] = vector<Texture>(5);
+        ENEMY_ANIM_TEXTURES["squid"]["idle"][0].loadFromFile("graphics/monsters/squid/idle/0.png");
+        ENEMY_ANIM_TEXTURES["squid"]["idle"][1].loadFromFile("graphics/monsters/squid/idle/1.png");
+        ENEMY_ANIM_TEXTURES["squid"]["idle"][2].loadFromFile("graphics/monsters/squid/idle/2.png");
+        ENEMY_ANIM_TEXTURES["squid"]["idle"][3].loadFromFile("graphics/monsters/squid/idle/3.png");
+        ENEMY_ANIM_TEXTURES["squid"]["idle"][4].loadFromFile("graphics/monsters/squid/idle/4.png");
+        ENEMY_ANIM_TEXTURES["squid"]["move"] = vector<Texture>(4);
+        ENEMY_ANIM_TEXTURES["squid"]["move"][0].loadFromFile("graphics/monsters/squid/move/0.png");
+        ENEMY_ANIM_TEXTURES["squid"]["move"][1].loadFromFile("graphics/monsters/squid/move/1.png");
+        ENEMY_ANIM_TEXTURES["squid"]["move"][2].loadFromFile("graphics/monsters/squid/move/2.png");
+        ENEMY_ANIM_TEXTURES["squid"]["move"][3].loadFromFile("graphics/monsters/squid/move/3.png");
+        ENEMY_ANIM_TEXTURES["squid"]["attack"] = vector<Texture>(1);
+        ENEMY_ANIM_TEXTURES["squid"]["attack"][0].loadFromFile("graphics/monsters/squid/attack/0.png");
     }
     void create_map() {
         load_textures();
@@ -164,6 +227,7 @@ public:
         BoundaryMap = load_map_from_file("map/map_FloorBlocks.csv");
         GrassMap = load_map_from_file("map/map_Grass.csv");
         ObjectsMap = load_map_from_file("map/map_Objects.csv");
+        EntitiesMap = load_map_from_file("map/map_Entities.csv");
         int x, y;
         for (int i=0; i<BoundaryMap.size(); i++) {
             for (int j=0; j<BoundaryMap[i].size(); j++) {
@@ -219,18 +283,57 @@ public:
                 }
             }
         }
-        Player obj;
-        obj.set_name("player");
-        obj.set_pos({2000, 1500});
-        obj.setTexture(PLAYER_TEXTURE);
-        obj.set_visibility(true);
-        FloatRect hitbox = obj.getGlobalBounds();
-        inflate_rect(hitbox, 0, -26);
-        obj.set_hitbox(hitbox);
-        player = obj;
+        for (int i=0; i<EntitiesMap.size(); i++) {
+            for (int j=0; j<EntitiesMap[i].size(); j++) {
+                x = j * TILESIZE;
+                y = i * TILESIZE;
+                if (EntitiesMap[i][j] == 394) {
+                    Player obj;
+                    obj.set_name("player");
+                    obj.set_pos({x, y});
+                    obj.setTexture(PLAYER_TEXTURE);
+                    obj.set_visibility(true);
+                    FloatRect hitbox = obj.getGlobalBounds();
+                    inflate_rect(hitbox, 0, -26);
+                    obj.set_hitbox(hitbox);
+                    player = obj;
+                }
+                else if (EntitiesMap[i][j] != -1) {
+                    Enemy tmp_obj;
+                    string monster_name;
+                    if (EntitiesMap[i][j] == 390) {
+                        monster_name = "bamboo";
+                    }
+                    else if (EntitiesMap[i][j] == 391) {
+                        monster_name = "spirit";
+                    }
+                    else if (EntitiesMap[i][j] == 392) {
+                        monster_name = "raccoon";
+                    }
+                    else {
+                        monster_name = "squid";
+                    }
+                    tmp_obj.set_name(monster_name);
+                    tmp_obj.set_sprite_type(monster_name);
+                    tmp_obj.set_pos({x, y});
+                    tmp_obj.setTexture(ENEMY_ANIM_TEXTURES[tmp_obj.get_sprite_type()]["idle"][0]);
+                    tmp_obj.set_visibility(true);
+                    FloatRect hitbox = tmp_obj.getGlobalBounds();
+                    if (monster_name != "raccoon") {
+                        inflate_rect(hitbox, 0, -10);
+                    }
+                    else {
+                        inflate_rect(hitbox, 0, -60);
+                        hitbox.top -= 30;
+                    }
+                    tmp_obj.set_hitbox(hitbox);
+                    enemys.push_back(tmp_obj);
+                }
+            }
+        }
         // player.setPosition(Vector2f(2000, 1500));
     }
-    void run(RenderWindow &screen, float time) {
+    void run(RenderWindow &screen, float time, Clock &clock) {
         // camera.set_screen_size(screen);
         screen.draw(Ground);
         for (int i=0; i<obstacle_tiles.size(); i++) {
@@ -239,12 +342,42 @@ public:
                 screen.draw(obstacle_tiles[i]);
             }
         }
+        vector<Enemy>before_player;
+        vector<Enemy>after_player;
+        for (auto enemy : enemys) {
+            if (enemy.get_sprite_type() != "raccoon" && enemy.isVisible() &&
+                enemy.get_hitbox().top <= player.get_hitbox().top) {
+                screen.draw(enemy);
+            }
+            float player_center_y = player.get_hitbox().top + player.get_hitbox().height / 2;
+            float player_center_x = player.get_hitbox().left + player.get_hitbox().width / 2;
+            if (enemy.get_sprite_type() == "raccoon" && enemy.isVisible()
+                 && (enemy.get_hitbox().top > player_center_y
+                     || enemy.get_hitbox().top + enemy.get_hitbox().height < player_center_y)) {
+                        screen.draw(enemy);
+            }
+            // screen.draw(shape);
+        }
         if (player.isVisible()) {
             screen.draw(player);
         }
         for (auto weapon : weapons) {
             screen.draw(weapon);
             // weapon.draw_shape(screen);
+        }
+        for (auto enemy : enemys) {
+            if (enemy.isVisible() &&
+                enemy.get_hitbox().top > player.get_hitbox().top) {
+                screen.draw(enemy);
+            }
+            float player_center_y = player.get_hitbox().top + player.get_hitbox().height / 2;
+            float player_center_x = player.get_hitbox().left + player.get_hitbox().width / 2;
+            if (enemy.get_sprite_type() == "raccoon" && enemy.isVisible()
+                 && enemy.get_hitbox().top <= player_center_y
+                     && enemy.get_hitbox().top + enemy.get_hitbox().height >= player_center_y) {
+                        screen.draw(enemy);
+            }
+            // screen.draw(shape);
         }
         for (int i=0; i<obstacle_tiles.size(); i++) {
             if (obstacle_tiles[i].isVisible() &&
@@ -264,6 +397,9 @@ public:
             // screen.draw(rect);
         }
         player.set_obstacle_tiles(obstacle_tiles);
+        for (int i=0; i<enemys.size(); i++) {
+            enemys[i].set_obstacle_tiles(obstacle_tiles);
+        }
         // camera.set_stop(true);
         // player.cout_hitbox();
         // player.cout_rect();
@@ -287,15 +423,14 @@ public:
         rect.setSize(Vector2f(player_box.width, player_box.height));
         rect.setPosition(Vector2f(player_box.left, player_box.top));
         rect.setFillColor(Color::White);
+        for (int i=0; i<enemys.size(); i++) {
+            enemys[i].update(player);
+        }
         // screen.draw(rect);
-        player_box = player.get_hitbox();
-        rect.setSize(Vector2f(player_box.width, player_box.height));
-        rect.setPosition(Vector2f(player_box.left, player_box.top));
-        rect.setFillColor(Color::Red);
+        /* FloatRect enemy_box = enemy.get_hitbox();
+        rect.setSize(Vector2f(enemy_box.width, enemy_box.height));
+        rect.setPosition(Vector2f(enemy_box.left, enemy_box.top));
+        rect.setFillColor(Color::Red);*/
         ui.display(player, screen);
-        // player.setTexture(PLAYER_ANIM_TEXTURES["up_attack"][0]);
-        // player.get_status();
-        // player.cooldowns(clock);
-        // screen.draw(debug())
     }
 };
