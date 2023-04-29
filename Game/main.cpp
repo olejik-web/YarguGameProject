@@ -77,7 +77,7 @@ int main()
     {
         float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
-        time /= 3000;
+        time /= 16000;
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -85,18 +85,7 @@ int main()
                 window.close();
         }
 
-
         window.setView(view); // обновление камеры
-
-        window.clear(Color(128, 106, 89));
-        GenerateMap(s_map, window, player, ghost, time); // Генерация карты
-        player.update(time, TileMap, view);
-        ghost.update(time, player, TileMap);
-        bullet.Update(time, player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
-
-        window.draw(player.sprite);
-        window.draw(ghost.sprite);
-        window.draw(bullet.sprite);
 
         std::ostringstream playerCoordX;
         playerCoordX << player.getPlayerCoordinateX();
@@ -109,11 +98,24 @@ int main()
         SpawnPointY << Map.getSpawn().second;
 
         textCoord.setString("Score " + playerCoordX.str() + " " + playerCoordY.str());
-        textCoord.setPosition(view.getCenter().x - SCREENX/2, view.getCenter().y - SCREENY/2);
+        textCoord.setPosition(view.getCenter().x - SCREENX / 2, view.getCenter().y - SCREENY / 2);
         textSpawnPoint.setString("Spawn coord: " + SpawnPointX.str() + " " + SpawnPointY.str());
         textSpawnPoint.setPosition(view.getCenter().x - SCREENX / 2, view.getCenter().y - SCREENY / 2 + 32);
+
+        window.clear(Color(128, 106, 89));
+        GenerateMap(s_map, window, player, ghost, time); // Генерация карты
+        player.update(time, TileMap, view);
+        ghost.update(time, player, TileMap);
+        bullet.Update(time, player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
+
+        window.draw(player.sprite);
+        window.draw(ghost.sprite);
+        window.draw(bullet.sprite);
+
         window.draw(textCoord);
         window.draw(textSpawnPoint);
+
+
 
         window.display();
     }

@@ -43,18 +43,8 @@ public:
         int X = coordSpawn.first;
         int Y = coordSpawn.second;
 
-        x = 50;
-        y = 50;
-
-        if (X > 0 && Y > 0)
-        {
-            x = (Y) * 2 * roomWidth * 32 + 50;
-            y = (X) * 2 * roomHieght * 32 + 50;
-        }
-        else if (X > 0)
-            y = (X) * 2 * roomHieght * 32 + 50;
-        else if (Y > 0)
-            x = (Y) * 2 * roomWidth * 32 + 50;
+        x = (Y) * 2 * roomWidth * 32 + 50;
+        y = (X) * 2 * roomHieght * 32 + 50;
 
         File = F;
         w = W; h = H;
@@ -69,7 +59,7 @@ public:
     void DirClear() { dir = 0; } // «абыть направление, в котором бежал персонаж.
     void DirPlus(int n) { dir |= n; } // —ложение направление.
 
-    void setSpeed(float n) { speed = 3; } // «адание скорости передвижени€ персонажа.
+    void setSpeed(float n) { speed = 5; } // «адание скорости передвижени€ персонажа.
 
     void move() // ќбновление фреймов и вычисление нажатой клавиши перемещени€.
     {
@@ -79,6 +69,7 @@ public:
                 Keyboard::isKeyPressed(Keyboard::Up) ||
                 Keyboard::isKeyPressed(Keyboard::Down)) // ѕроверка нажати€ клавиши.
                 CurrentFrame += 0.05; // ѕроигрывани€ анимации, если клавиша нажата.
+            if (CurrentFrame >= 4) CurrentFrame -= 4;
             if (Keyboard::isKeyPressed(Keyboard::Up)) // Ѕег вверх.
             {
                 DirPlus(1 << 3); setSpeed(0.3);
@@ -101,7 +92,6 @@ public:
                 DirPlus(1 << 0); setSpeed(0.3);
                 sprite.setTextureRect(IntRect(32 * int(CurrentFrame), 64, 32, 32));
             }
-            if (CurrentFrame >= 4) CurrentFrame -= 4;
         }
     }
 
@@ -134,37 +124,38 @@ public:
 
     void interactionWithMap(float& time, vector<vector<char> > TileMap)
     {
+        bool X = 0, Y = 0;
         for (int i = 0; i < h; i++)
         {
 
-            //if ((dx > 0) && TileMap[int(x + w + dx) / TILE_SIZE][int(y + i) / TILE_SIZE] == '0')
+            // ѕроверка пересикаечени€ со стеной при перемещении вправо.
             if ((dx > 0) && TileMap[int(y + i) / TILE_SIZE][int(x + w + dx) / TILE_SIZE] == '0')
             {
-                x = int(x + dx);
+                x = int(x);
                 break;
             }
-            //if ((dx < 0) && TileMap[int(x + dx) / TILE_SIZE][int(y + i) / TILE_SIZE] == '0')
-            if ((dx < 0) && TileMap[int(y + i) / TILE_SIZE][int(x + dx) / TILE_SIZE] == '0') // ѕроверка пересикаечени€ со стеной при перемещении вправо.
+            // ѕроверка пересикаечени€ со стеной при перемещении влево.
+            if ((dx < 0) && TileMap[int(y + i) / TILE_SIZE][int(x + dx) / TILE_SIZE] == '0')
             {
-                x = int((x + dx) / TILE_SIZE) * TILE_SIZE + w;
+                x = int((x + dx) / TILE_SIZE + 1) * TILE_SIZE;
                 break;
             }
 
             // ѕрибавл€ем смещение к координатам персонажа.
             if (i == h - 1)
-                x += dx * time;
+                X = true;
         }
 
         for (int j = 0; j < w; j++)
         {
-            //if ((dy > 0) && TileMap[int(x + j) / TILE_SIZE][int(y + h + dy) / TILE_SIZE] == '0')
-            if ((dy > 0) && TileMap[int(y + h + dy) / TILE_SIZE][int(x + j) / TILE_SIZE] == '0') // ѕроверка пересикаечени€ со стеной при перемещении вниз.
+            // ѕроверка пересикаечени€ со стеной при перемещении вниз.
+            if ((dy > 0) && TileMap[int(y + h + dy) / TILE_SIZE][int(x + j) / TILE_SIZE] == '0')
             {
-                y = int(y + dy);
+                y = int(y);
                 break;
             }
-            //if ((dy < 0) && TileMap[int(x + j) / TILE_SIZE][int(y + dy) / TILE_SIZE] == '0')
-            if ((dy < 0) && TileMap[int(y + dy) / TILE_SIZE][int(x + j) / TILE_SIZE] == '0') // ѕроверка пересикаечени€ со стеной при перемещении вверх.
+            // ѕроверка пересикаечени€ со стеной при перемещении вверх.
+            if ((dy < 0) && TileMap[int(y + dy) / TILE_SIZE][int(x + j) / TILE_SIZE] == '0')
             {
                 y = int((y + dy + h) / TILE_SIZE) * TILE_SIZE;
                 break;
@@ -172,8 +163,12 @@ public:
 
             // ѕрибавл€ем смещение к координатам персонажа.
             if (j == w - 1)
-                y += dy * time;
+                Y = true;
         }
+        if (X)
+            x += dx * time;
+        if(Y)
+            y += dy * time;
 
     }
 
@@ -192,9 +187,9 @@ public:
             cout << dir << ' ' << speed << '\n';
         }
 
-        move();
-        interactionWithMap(time,TileMap);
         sprite.setPosition(x, y);
+        interactionWithMap(time,TileMap);
+        move();
         //move();
         Attack(time);
     }
