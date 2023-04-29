@@ -9,27 +9,31 @@ using namespace sf;
 
 class Enemy {
 private:
-    float x, y;
-    float w, h;
 
 public:
     Sprite sprite;
     string File;
     Image image;
     Texture texture;
-
-    pair<int, int> CurrentTile;
+    //bool Intercet = false;
+    float dx, dy, speed = 0;
+    float x, y;
+    float w, h;
+    //pair<int, int> CurrentTile;
     int Health = 5;
 
-    Enemy(string F, float X, float Y,float Left,float Top, float W, float H)
+    Enemy(string NamePicture, float X, float Y,float Left,float Top, float W, float H,float spriteScale,float speedBUFF)
     {
-        File = F;
+        speed = speedBUFF;
+        File = NamePicture;
         w = W; h = H;
         image.loadFromFile(File);
         texture.loadFromImage(image);
         sprite.setTexture(texture);
         x = X; y = Y;
         sprite.setTextureRect(IntRect(Top, Left, w, h));
+        sprite.setScale(spriteScale, spriteScale);
+        //sprite.setColor(Color(sprite.getColor().r, sprite.getColor().g, sprite.getColor().b, 245));
         sprite.setPosition(x, y);
     }
 };
@@ -37,14 +41,14 @@ public:
 
 class Ghost : public Enemy {
 public:
-    float dx, dy, speed = 0.2;
-    int dir = 0;
+    //float speed = 0.177;
+    //int dir = 0;
     float CurrentFrame = 0;
     bool isTeleporting = false;
     bool Hide = false;
-    int currentAlpha = 255;
+    int currentAlpha = 245;
 
-    Ghost(string F, float X, float Y, float Left, float Top, float W, float H):Enemy(F,X,Y,Left,Top,W,H){}
+    Ghost(string NamePicture, float X, float Y, float Left, float Top, float W, float H, float spriteScale,float speed):Enemy(NamePicture,X,Y,Left,Top,W,H,spriteScale,speed){}
 
     void teleport(sf::String TileMap[]) {
         //Временно
@@ -64,7 +68,7 @@ public:
         changeSprite(dlina);
         dx /= dlina;
         dy /= dlina;
-        if (dx != 0 && dy != 0) {
+        if (dx != 0 || dy != 0) {
             sprite.move(dx * speed * time, dy * speed * time);
         }
     }
@@ -102,8 +106,8 @@ public:
         else {
             currentAlpha += 1;
             sprite.setColor(Color(sprite.getColor().r, sprite.getColor().g, sprite.getColor().b, currentAlpha));
-            if (currentAlpha > 255) {
-                currentAlpha = 255;
+            if (currentAlpha > 245) {
+                currentAlpha = 245;
                 isTeleporting = false;
                 sprite.setColor(Color(sprite.getColor().r, sprite.getColor().g, sprite.getColor().b, currentAlpha));
             }
@@ -112,7 +116,7 @@ public:
     }
 
     void update(float& time,Player &player,sf::String TileMap[]) {
-        rand();
+        
         if (sprite.getGlobalBounds().intersects(player.sprite.getGlobalBounds())) {
             isTeleporting = true;
             Hide = true;
@@ -124,4 +128,82 @@ public:
             TeleportAnimation(time,TileMap);
         }
     }
+};
+
+
+
+class Test : public Enemy {
+public:
+    float CurrentFrame = 0;
+    //bool isTeleporting = false;
+    //bool Hide = false;
+    //int currentAlpha = 255;
+
+    Test(string NamePicture, float X, float Y, float Left, float Top, float W, float H, float spriteScale, float speed) :Enemy(NamePicture, X, Y, Left, Top, W, H, spriteScale, speed) {}
+
+
+
+    void move(float time, Player& player) {
+        dx = player.sprite.getPosition().x - sprite.getPosition().x;
+        dy = player.sprite.getPosition().y - sprite.getPosition().y;
+        float dlina = sqrt(dx * dx + dy * dy);
+        dx /= dlina;
+        dy /= dlina;
+        
+        
+
+        if (dx != 0 || dy != 0) {
+            sprite.move(dx * speed * time, dy * speed * time);
+        }
+    }
+
+
+    void update(float& time, Player& player, sf::String TileMap[]) {
+
+
+        move(time, player);
+        //Intercet = false;
+    }
+   
+};
+
+class Turrel : public Enemy {
+public:
+    float CurrentFrame = 0;
+    float fireRate = 2.2;
+    float currentTime = 2.2;
+    //bool isTeleporting = false;
+    //bool Hide = false;
+    //int currentAlpha = 255;
+
+    Turrel(string NamePicture, float X, float Y, float Left, float Top, float W, float H, float spriteScale, float speed) :Enemy(NamePicture, X, Y, Left, Top, W, H, spriteScale, speed) {}
+
+
+
+    void fire(float time, Player& player) {
+       
+    }
+
+    void Animation(float time) {
+        if (CurrentFrame > 6) {
+            CurrentFrame = 0;
+        }
+        sprite.setTextureRect(IntRect((int)CurrentFrame*128, 0, 128, 128));
+        CurrentFrame += 0.04 * time;
+        
+    }
+
+    void update(float& time, Player& player, sf::String TileMap[]) {
+
+        Animation(time);
+        if (currentTime <= 0) {
+            fire(time, player);
+            currentTime = fireRate;
+        }
+        currentTime -= 0.01 * time;
+
+        //move(time, player);
+        //Intercet = false;
+    }
+
 };

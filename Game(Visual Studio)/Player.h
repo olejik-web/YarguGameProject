@@ -8,12 +8,14 @@ using namespace sf;
 
 class Player {
 private:
+    
+
+public:
     float x, y;
     float w, h, dx, dy, speed = 0;
     int dir = 0;
     float CurrentFrame = 0;
 
-public:
     Sprite sprite;
     string File;
     Image image;
@@ -24,8 +26,7 @@ public:
     bool isAttack = false;
     bool isRight = true;
     int Health = 5;
-
-    Player(string F, float X, float Y, float W, float H)
+    Player(string F, float X, float Y, float Left, float Top, float W, float H)
     {
         File = F;
         w = W; h = H;
@@ -33,7 +34,7 @@ public:
         texture.loadFromImage(image);
         sprite.setTexture(texture);
         x = X; y = Y;
-        sprite.setTextureRect(IntRect(w, h, w, h));
+        sprite.setTextureRect(IntRect(Top, Left, w, h));
         sprite.setPosition(x, y);
     }
 
@@ -42,14 +43,14 @@ public:
 
     void setSpeed(float n) { speed = n; } // Задание скорости передвижения персонажа.
 
-    void move() // Обновление фреймов и вычисление нажатой клавиши перемещения.
+    void move(float& time) // Обновление фреймов и вычисление нажатой клавиши перемещения.
     {
         if (!isAttack && Health) {
             if (Keyboard::isKeyPressed(Keyboard::Left) ||
                 Keyboard::isKeyPressed(Keyboard::Right)||
                 Keyboard::isKeyPressed(Keyboard::Up) ||
                 Keyboard::isKeyPressed(Keyboard::Down)) // Проверка нажатия клавиши.
-                CurrentFrame += 0.01; // Проигрывания анимации, если клавиша нажата.
+                CurrentFrame += 0.01*time; // Проигрывания анимации, если клавиша нажата.
             if (Keyboard::isKeyPressed(Keyboard::Up)) // Бег вверх.
             {
                 DirPlus(1 << 3); setSpeed(0.3);
@@ -154,20 +155,21 @@ public:
 
         dx = ((1 << 0) & dir ? 1 : 0) * speed - ((1 << 1) & dir ? 1 : 0) * speed; // Вычисляем смещение по x через биты dir.
         dy = ((1 << 2) & dir ? 1 : 0) * speed - ((1 << 3) & dir ? 1 : 0) * speed; // Вычисляем смещение по y через биты dir.
+        //cout << dx << ' ' << dy << '\n';
         DirClear();
         
         view.setCenter(getPlayerCoordinateX(), getPlayerCoordinateY());
 
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G) && !isAttack) { //ь=булевская переменая что герой аттакует
-            cout << dir << ' ' << speed << '\n';
-        }
 
-        move();
+        move(time);
+        
         interactionWithMap(time,TileMap);
-        sprite.setPosition(x, y);
-        //move();
+
         Attack(time);
+
+        sprite.setPosition(x, y);
+        //move()
     }
 
     float getPlayerCoordinateX() { return x; }

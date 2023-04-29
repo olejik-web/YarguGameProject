@@ -1,72 +1,75 @@
 ﻿  Game.cpp
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Game.cpp(7,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Game.cpp(8,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Game.cpp(9,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(36,48): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Game.cpp(7,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Game.cpp(8,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Game.cpp(9,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(37,53): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
           with
           [
               T=int
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(36,45): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(37,50): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
           with
           [
               T=int
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(36,42): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(37,44): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
           with
           [
               T=int
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(36,39): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(37,39): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
           with
           [
               T=int
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(52,1): warning C4305: +=: усечение из "double" в "float"
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(55,1): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(60,1): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(66,1): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(72,1): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(86,34): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(114,24): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(134,24): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Player.h(140,51): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Game.cpp(11,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\EnemyTest.h(4,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\EnemyTest.h(32,53): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(53,37): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(56,1): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(61,1): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(67,1): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(73,1): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(87,34): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(115,24): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(135,24): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Player.h(141,51): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Game.cpp(11,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(4,10): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(34,53): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
           with
           [
               T=int
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\EnemyTest.h(32,50): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(34,50): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
           with
           [
               T=int
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\EnemyTest.h(32,44): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(34,44): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
           with
           [
               T=int
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\EnemyTest.h(32,39): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(34,39): warning C4244: аргумент: преобразование "float" в "T", возможна потеря данных
           with
           [
               T=int
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\EnemyTest.h(40,25): warning C4305: инициализация: усечение из "double" в "float"
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\EnemyTest.h(57,47): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\EnemyTest.h(57,31): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Game.cpp(28,41): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Game.cpp(28,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Game.cpp(39,41): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(61,47): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(61,31): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(173,20): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(174,23): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(192,30): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\EnemyTest.h(203,29): warning C4244: -=: преобразование "double" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Game.cpp(45,41): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Game.cpp(45,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Game.cpp(58,41): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Game.cpp(39,32): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Game.cpp(58,32): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\Game.cpp(59,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
-  Game.vcxproj -> C:\Users\User\Documents\GitHub\YarguGameProject\Game(Visual Studio)\x64\Debug\Game.exe
+C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\Game.cpp(79,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+  Game.vcxproj -> C:\Users\User\Documents\GitHub\Test\YarguGameProject\Game(Visual Studio)\x64\Debug\Game.exe

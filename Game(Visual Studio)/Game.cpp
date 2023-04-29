@@ -17,16 +17,35 @@ int SCREENX = 1000;
 int SCREENY = 600;
 
 
-void GenerateMap(Sprite& s_map,RenderWindow& window,Player& play, Enemy& Enemy ,float& time) {
+void EnemyIntesect(Enemy& enemy, Sprite& s_map,float &time) {
+    if (enemy.dy > 0 && enemy.sprite.getGlobalBounds().intersects(s_map.getGlobalBounds())) {
+        enemy.sprite.move(0, enemy.dy * time * enemy.speed);
+    }
+    if (enemy.dy < 0 && enemy.sprite.getGlobalBounds().intersects(s_map.getGlobalBounds())) {
+        enemy.sprite.move(0, -enemy.dy * time * enemy.speed);
+    }
+    if (enemy.dx > 0 && enemy.sprite.getGlobalBounds().intersects(s_map.getGlobalBounds())) {
+        enemy.sprite.move(-enemy.dx * time * enemy.speed, 0);
+    }
+    if (enemy.dx < 0 && enemy.sprite.getGlobalBounds().intersects(s_map.getGlobalBounds())) {
+        enemy.sprite.move(enemy.dx * time * enemy.speed, 0);
+    }
+    //косяв в икс кординатах
+}
+
+
+void GenerateMap(Sprite& s_map,RenderWindow& window,Enemy&enemy, float& time) {
     for (int i = 0; i < HEIGHT_MAP; i++)
         for (int j = 0; j < WIDTH_MAP; j++)
         {
             if (TileMap[i][j] == ' ')  s_map.setTextureRect(IntRect(64, 224, 32, 32)); //если встретили символ пробел, то рисуем 1й квадратик
             if (TileMap[i][j] == 's')  s_map.setTextureRect(IntRect(160, 160, 32, 32));//если встретили символ s, то рисуем 2й квадратик
-            if ((TileMap[i][j] == '0')) s_map.setTextureRect(IntRect(160, 160, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
+            if ((TileMap[i][j] == '0')) { s_map.setTextureRect(IntRect(160, 160, 32, 32)); }//если встретили символ 0, то рисуем 3й квадратик
             if ((TileMap[i][j] == '+')) { s_map.setTextureRect(IntRect(0, 160, 32, 32));  }
             s_map.setPosition(j * 32, i * 32);//по сути раскидывает квадратики, превращая в карту. то есть задает каждому из них позицию. если убрать, то вся карта нарисуется в одном квадрате 32*32 и мы увидим один квадрат
-            
+            /*if ((TileMap[i][j] == '0')) {
+                EnemyIntesect(enemy, s_map, time);
+            }*/
 
             window.draw(s_map);//рисуем квадратики на экран
         }
@@ -50,10 +69,11 @@ int main()
 
 
     sf::Clock clock;
-    Player player("Assets/AnimationSheet_Character.png",32,32,32,32);
-    Ghost ghost("Assets/gothicvania patreon collection/Ghost-Files/PNG/ghost-shriek.png", 3 * 32, 9 * 32,0,0, 64, 80);
+    Player player("Assets/AnimationSheet_Character.png",32,32,0,0,32,32);
+    //Test test("Assets/AnimationSheet_Character.png",3*32,10*32,0,0,32,32,0.177);
+    //Ghost ghost("Assets/gothicvania patreon collection/Ghost-Files/PNG/ghost-shriek.png", 3 * 32, 9 * 32,0,0, 64, 80,0.177);
     //Enemy enemy("Assets/AnimationSheet_Character.png", 3 * 32, 1 * 32, 32, 32);
-
+    Turrel turrel("Assets/Animation Pack/Crystal.png", 3 * 32, 9 * 32, 0, 0, 128, 128,0.5,0);
     while (window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
@@ -70,12 +90,19 @@ int main()
         window.setView(view); // обновление камеры
 
         window.clear(Color(128,106,89));
-        GenerateMap(s_map, window, player, ghost, time); // Генерация карты
+        GenerateMap(s_map, window,turrel,time); // Генерация карты
         player.update(time, TileMap, view);
-        ghost.update(time, player,TileMap);
-        
+        turrel.update(time, player, TileMap);
+
+        //ghost.update(time, player,TileMap);
+        //turrel.update(time, player, TileMap);
+        //test.update(time, player, TileMap);
+        window.draw(turrel.sprite);
         window.draw(player.sprite);
-        window.draw(ghost.sprite);
+
+        //window.draw(test.sprite);
+        
+        //window.draw(turrel.sprite);
         window.display();
     }
     return 0;

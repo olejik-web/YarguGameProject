@@ -10,10 +10,7 @@ using namespace sf;
 
 class Enemy {
 private:
-    float x, y;
-    float w, h, dx, dy, speed = 0;
-    int dir = 0;
-    float CurrentFrame = 0;
+    
 
 public:
     Sprite sprite;
@@ -21,6 +18,11 @@ public:
     Image image;
     Texture texture;
 
+    float x, y;
+    float w, h, dx, dy, speed = 0;
+    int dir = 0;
+    float CurrentFrame = 0;
+    bool Intersect = false;
 
     pair<int, int> CurrentTile;
     bool isMove = false;
