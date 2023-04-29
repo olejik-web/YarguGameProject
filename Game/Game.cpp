@@ -1,15 +1,19 @@
-ï»¿#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <iostream>
 #include <cmath>
 #include<iomanip>
 #include<Windows.h>
-#include "Maps.h";
+//#include "Maps.h";
 #include "View.h";
 #include "Player.h";
+#include "map.h";
 //#include "Enemy.h";
 #include "EnemyTest.h";
 #include "Bullet.h"
+#include <string>
+
+#include <sstream>
 
 using namespace sf;
 using namespace std;
@@ -17,70 +21,102 @@ using namespace std;
 int SCREENX = 1000;
 int SCREENY = 600;
 
+vector<vector<char> > TileMap;
 
-
-void GenerateMap(Sprite& s_map,RenderWindow& window,Player& play, Enemy& Enemy ,float& time) {
+void GenerateMap(Sprite& s_map, RenderWindow& window, Player& play, Enemy& Enemy, float& time) {
     for (int i = 0; i < HEIGHT_MAP; i++)
         for (int j = 0; j < WIDTH_MAP; j++)
         {
-            if (TileMap[i][j] == ' ')  s_map.setTextureRect(IntRect(64, 224, 32, 32)); //ÐµÑÐ»Ð¸ Ð²ÑÑ‚Ñ€ÐµÑ‚Ð¸Ð»Ð¸ ÑÐ¸Ð¼Ð²Ð¾Ð» Ð¿Ñ€Ð¾Ð±ÐµÐ», Ñ‚Ð¾ Ñ€Ð¸ÑÑƒÐµÐ¼ 1Ð¹ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð¸Ðº
-            if (TileMap[i][j] == 's')  s_map.setTextureRect(IntRect(160, 160, 32, 32));//ÐµÑÐ»Ð¸ Ð²ÑÑ‚Ñ€ÐµÑ‚Ð¸Ð»Ð¸ ÑÐ¸Ð¼Ð²Ð¾Ð» s, Ñ‚Ð¾ Ñ€Ð¸ÑÑƒÐµÐ¼ 2Ð¹ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð¸Ðº
-            if ((TileMap[i][j] == '0')) s_map.setTextureRect(IntRect(160, 160, 32, 32));//ÐµÑÐ»Ð¸ Ð²ÑÑ‚Ñ€ÐµÑ‚Ð¸Ð»Ð¸ ÑÐ¸Ð¼Ð²Ð¾Ð» 0, Ñ‚Ð¾ Ñ€Ð¸ÑÑƒÐµÐ¼ 3Ð¹ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð¸Ðº
-            if ((TileMap[i][j] == '+')) { s_map.setTextureRect(IntRect(0, 160, 32, 32));  }
-            s_map.setPosition(j * 32, i * 32);//Ð¿Ð¾ ÑÑƒÑ‚Ð¸ Ñ€Ð°ÑÐºÐ¸Ð´Ñ‹Ð²Ð°ÐµÑ‚ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð¸ÐºÐ¸, Ð¿Ñ€ÐµÐ²Ñ€Ð°Ñ‰Ð°Ñ Ð² ÐºÐ°Ñ€Ñ‚Ñƒ. Ñ‚Ð¾ ÐµÑÑ‚ÑŒ Ð·Ð°Ð´Ð°ÐµÑ‚ ÐºÐ°Ð¶Ð´Ð¾Ð¼Ñƒ Ð¸Ð· Ð½Ð¸Ñ… Ð¿Ð¾Ð·Ð¸Ñ†Ð¸ÑŽ. ÐµÑÐ»Ð¸ ÑƒÐ±Ñ€Ð°Ñ‚ÑŒ, Ñ‚Ð¾ Ð²ÑÑ ÐºÐ°Ñ€Ñ‚Ð° Ð½Ð°Ñ€Ð¸ÑÑƒÐµÑ‚ÑÑ Ð² Ð¾Ð´Ð½Ð¾Ð¼ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ðµ 32*32 Ð¸ Ð¼Ñ‹ ÑƒÐ²Ð¸Ð´Ð¸Ð¼ Ð¾Ð´Ð¸Ð½ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚
-            
+            if (TileMap[i][j] == ' ')  s_map.setTextureRect(IntRect(64, 224, 32, 32)); //åñëè âñòðåòèëè ñèìâîë ïðîáåë, òî ðèñóåì 1é êâàäðàòèê
+            if (TileMap[i][j] == 's')  s_map.setTextureRect(IntRect(160, 160, 32, 32));//åñëè âñòðåòèëè ñèìâîë s, òî ðèñóåì 2é êâàäðàòèê
+            if ((TileMap[i][j] == '0')) s_map.setTextureRect(IntRect(160, 160, 32, 32));//åñëè âñòðåòèëè ñèìâîë 0, òî ðèñóåì 3é êâàäðàòèê
+            if ((TileMap[i][j] == '+')) { s_map.setTextureRect(IntRect(0, 160, 32, 32)); }
+            s_map.setPosition(j * 32, i * 32);//ïî ñóòè ðàñêèäûâàåò êâàäðàòèêè, ïðåâðàùàÿ â êàðòó. òî åñòü çàäàåò êàæäîìó èç íèõ ïîçèöèþ. åñëè óáðàòü, òî âñÿ êàðòà íàðèñóåòñÿ â îäíîì êâàäðàòå 32*32 è ìû óâèäèì îäèí êâàäðàò
 
-            window.draw(s_map);//Ñ€Ð¸ÑÑƒÐµÐ¼ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð¸ÐºÐ¸ Ð½Ð° ÑÐºÑ€Ð°Ð½
+
+            window.draw(s_map);//ðèñóåì êâàäðàòèêè íà ýêðàí
         }
 
 }
 
 int main()
 {
+    std::srand(std::time(nullptr));
+    qmap Map;
+    Map.initMap();
+    Map.initMainMap();
+    Map.addDoor();
+
+    TileMap = Map.getMainMap();
+
     sf::RenderWindow window(sf::VideoMode(SCREENX, SCREENY), "GameProject");
     view.reset(FloatRect(0, 0, SCREENX, SCREENY));
 
+    Font font;
+    font.loadFromFile("KarmaFuture.ttf");
+    Text textCoord("", font, 16);
+    Text textSpawnPoint("", font, 16);
 
-    Image map_image;//Ð¾Ð±ÑŠÐµÐºÑ‚ Ð¸Ð·Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ Ð´Ð»Ñ ÐºÐ°Ñ€Ñ‚Ñ‹
-    map_image.loadFromFile("Assets/Kings and Pigs/Sprites/14-TileSets/Terrain (32x32).png");//Ð·Ð°Ð³Ñ€ÑƒÐ¶Ð°ÐµÐ¼ Ñ„Ð°Ð¹Ð» Ð´Ð»Ñ ÐºÐ°Ñ€Ñ‚Ñ‹
-    Texture map;//Ñ‚ÐµÐºÑÑ‚ÑƒÑ€Ð° ÐºÐ°Ñ€Ñ‚Ñ‹
-    map.loadFromImage(map_image);//Ð·Ð°Ñ€ÑÐ¶Ð°ÐµÐ¼ Ñ‚ÐµÐºÑÑ‚ÑƒÑ€Ñƒ ÐºÐ°Ñ€Ñ‚Ð¸Ð½ÐºÐ¾Ð¹
-    Sprite s_map;//ÑÐ¾Ð·Ð´Ð°Ñ‘Ð¼ ÑÐ¿Ñ€Ð°Ð¹Ñ‚ Ð´Ð»Ñ ÐºÐ°Ñ€Ñ‚Ñ‹
-    s_map.setTexture(map);//Ð·Ð°Ð»Ð¸Ð²Ð°ÐµÐ¼ Ñ‚ÐµÐºÑÑ‚ÑƒÑ€Ñƒ ÑÐ¿Ñ€Ð°Ð¹Ñ‚Ð¾Ð¼
-
-
-
+    Image map_image;//îáúåêò èçîáðàæåíèÿ äëÿ êàðòû
+    map_image.loadFromFile("Assets/Kings and Pigs/Sprites/14-TileSets/Terrain (32x32).png");//çàãðóæàåì ôàéë äëÿ êàðòû
+    Texture tmap;//òåêñòóðà êàðòû
+    tmap.loadFromImage(map_image);//çàðÿæàåì òåêñòóðó êàðòèíêîé
+    Sprite s_map;//ñîçäà¸ì ñïðàéò äëÿ êàðòû
+    s_map.setTexture(tmap);//çàëèâàåì òåêñòóðó ñïðàéòîì
 
     sf::Clock clock;
-    Player player("Assets/AnimationSheet_Character.png",50,50,32,32);
+    int X = Map.getSpawn().first;
+    int Y = Map.getSpawn().second;
+    //Player player("Assets/AnimationSheet_Character.png", 50, 50, 32, 32);
+    Player player("Assets/AnimationSheet_Character.png",
+        Map.getSpawn(), Map.getRoomWidth(), Map.getRoomHieght(), 32, 32);
     Ghost ghost("Assets/AnimationSheet_Character.png", 3 * 32, 9 * 32, 32, 32);
-    Bullet bullet("Assets/Just_arrow.png",50, 50, 0.5);
-
+    Bullet bullet("Assets/Just_arrow.png", 50, 50, 0.5);
 
     while (window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
-        time /= 3000;
+        time /= 16000;
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
         }
 
-        
-        window.setView(view); // Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ðµ ÐºÐ°Ð¼ÐµÑ€Ñ‹
+        window.setView(view); // îáíîâëåíèå êàìåðû
 
-        window.clear(Color(128,106,89));
-        GenerateMap(s_map, window, player, ghost, time); // Ð“ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ñ ÐºÐ°Ñ€Ñ‚Ñ‹
+        std::ostringstream playerCoordX;
+        playerCoordX << player.getPlayerCoordinateX();
+        std::ostringstream playerCoordY;
+        playerCoordY << player.getPlayerCoordinateY();
+
+        std::ostringstream SpawnPointX;
+        SpawnPointX << Map.getSpawn().first;
+        std::ostringstream SpawnPointY;
+        SpawnPointY << Map.getSpawn().second;
+
+        textCoord.setString("Score " + playerCoordX.str() + " " + playerCoordY.str());
+        textCoord.setPosition(view.getCenter().x - SCREENX / 2, view.getCenter().y - SCREENY / 2);
+        textSpawnPoint.setString("Spawn coord: " + SpawnPointX.str() + " " + SpawnPointY.str());
+        textSpawnPoint.setPosition(view.getCenter().x - SCREENX / 2, view.getCenter().y - SCREENY / 2 + 32);
+
+        window.clear(Color(128, 106, 89));
+        GenerateMap(s_map, window, player, ghost, time); // Ãåíåðàöèÿ êàðòû
         player.update(time, TileMap, view);
-        ghost.update(time, player,TileMap);
+        ghost.update(time, player, TileMap);
         bullet.Update(time, player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
-        
+
         window.draw(player.sprite);
         window.draw(ghost.sprite);
         window.draw(bullet.sprite);
+
+        window.draw(textCoord);
+        window.draw(textSpawnPoint);
+
+
+
         window.display();
     }
     return 0;
