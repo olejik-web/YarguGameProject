@@ -71,10 +71,6 @@ public:
                 DirPlus(1 << 0); setSpeed(0.3);
                 sprite.setTextureRect(IntRect(32 * int(CurrentFrame), 64, 32, 32));
             }
-            if (Keyboard::isKeyPressed(Keyboard::Space)) // Стрельба.
-            {
-                isShoot = true;
-            }
             if (CurrentFrame >= 4) CurrentFrame -= 4;
         }
     }
@@ -167,6 +163,10 @@ public:
         }
 
         move();
+        if (Keyboard::isKeyPressed(Keyboard::Space)) // Стрельба.
+        {
+            isShoot = true;
+        }
         interactionWithMap(time,TileMap);
         sprite.setPosition(x, y);
         //move();
