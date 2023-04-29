@@ -57,19 +57,19 @@ C:\Users\79646\Desktop\YarguGameProject\Game\EnemyTest.h(40,25): warning C4305: 
 C:\Users\79646\Desktop\YarguGameProject\Game\EnemyTest.h(54,47): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
 C:\Users\79646\Desktop\YarguGameProject\Game\EnemyTest.h(54,31): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
 C:\Users\79646\Desktop\YarguGameProject\Game\Bullet.h(9,41): warning C4305: инициализация: усечение из "double" в "float"
-C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(46,41): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(46,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(61,41): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\79646\Desktop\YarguGameProject\Game\Bullet.h(30,53): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\79646\Desktop\YarguGameProject\Game\Bullet.h(34,60): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(43,41): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(43,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(58,41): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(61,32): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(58,32): warning C4244: аргумент: преобразование "int" в "T", возможна потеря данных
           with
           [
               T=float
           ]
-C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(81,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
-C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(91,85): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(91,76): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\79646\Desktop\YarguGameProject\Game\Game.cpp(78,20): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
   Game.vcxproj -> C:\Users\79646\Desktop\YarguGameProject\Game\x64\Debug\Game.exe

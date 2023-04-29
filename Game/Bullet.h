@@ -18,14 +18,22 @@ public:
         image.loadFromFile(File);
         texture.loadFromImage(image);
         sprite.setTexture(texture);
-        x = X + 8;
-        y = Y + 8;
-        sprite.setPosition(x, y);
+        sprite.setOrigin(8, 0);
+        x = X + 16;
+        y = Y + 16;
         targetX = targX;
         targetY = targY;
         dx = (targetX - x);
         dy = (targetY - y);
-        cout << x << " " << y << " " << dx << " " << dy << " " << sqrt(dx * dx + dy * dy) << '\n';
+        if (dy >= 0)
+        {
+            sprite.setRotation(-atan(dx / dy) * 180 / 3.14);
+        }
+        else
+        {
+            sprite.setRotation(-atan(dx / dy) * 180 / 3.14 + 180);
+        }
+        sprite.setPosition(x, y);
         float dlinna = sqrt(dx * dx + dy * dy);
         dx /= dlinna;
         dy /= dlinna;

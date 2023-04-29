@@ -17,9 +17,6 @@ using namespace std;
 int SCREENX = 1000;
 int SCREENY = 600;
 
-int targetX = 100;
-int targetY = 100;
-
 vector<Bullet*> bullets;
 
 void Bullet_intersect(Sprite& s_map)
@@ -88,7 +85,7 @@ int main()
                 window.close();
             if (player.isShoot)
             {
-                bullets.push_back(new Bullet(player.getX(), player.getY(), targetX, targetY));
+                bullets.push_back(new Bullet(player.getX(), player.getY(), ghost.sprite.getPosition().x + 16, ghost.sprite.getPosition().y) + 16);
                 player.isShoot = false;
             }
         }

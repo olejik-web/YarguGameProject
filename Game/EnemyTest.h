@@ -37,7 +37,7 @@ public:
 
 class Ghost : public Enemy {
 public:
-    float dx, dy, speed = 0.2;
+    float dx, dy, speed = 0.01;
     int dir = 0;
     float CurrentFrame = 0;
 
