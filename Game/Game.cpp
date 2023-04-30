@@ -85,7 +85,7 @@ int main()
                 window.close();
             if (player.isShoot)
             {
-                bullets.push_back(new Bullet(player.getX(), player.getY(), ghost.sprite.getPosition().x + 16, ghost.sprite.getPosition().y) + 16);
+                bullets.push_back(new Bullet(player.getX(), player.getY(), ghost.sprite.getPosition().x, ghost.sprite.getPosition().y));
                 player.isShoot = false;
             }
         }

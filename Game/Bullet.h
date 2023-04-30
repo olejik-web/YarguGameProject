@@ -23,8 +23,8 @@ public:
         y = Y + 16;
         targetX = targX;
         targetY = targY;
-        dx = (targetX - x);
-        dy = (targetY - y);
+        dx = (targetX - x) + 16;
+        dy = (targetY - y) + 16;
         if (dy >= 0)
         {
             sprite.setRotation(-atan(dx / dy) * 180 / 3.14);
