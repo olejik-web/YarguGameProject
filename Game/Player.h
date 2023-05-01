@@ -126,18 +126,20 @@ public:
         bool X = 0, Y = 0;
         dx *= time;
         dy *= time;
-        for (int i = 0; i < h; i++)
+        for (long double i = 0; i < h; i+=1)
         {
 
             // ѕроверка пересикаечени€ со стеной при перемещении вправо.
             if ((dx > 0) && TileMap[int(y + i) / TILE_SIZE][int(x + w + dx) / TILE_SIZE] == '0')
             {
-                x = int(x);
+                cout << 1 << '\n';
+                x = int((x + dx) / TILE_SIZE) * TILE_SIZE;
                 break;
             }
             // ѕроверка пересикаечени€ со стеной при перемещении влево.
             if ((dx < 0) && TileMap[int(y + i) / TILE_SIZE][int(x + dx) / TILE_SIZE] == '0')
             {
+                cout << 2 << '\n';
                 x = int((x + dx) / TILE_SIZE + 1) * TILE_SIZE;
                 break;
             }
@@ -147,17 +149,19 @@ public:
                 X = true;
         }
 
-        for (int j = 0; j < w; j++)
+        for (long double j = 0; j < w; j+=1)
         {
             // ѕроверка пересикаечени€ со стеной при перемещении вниз.
             if ((dy > 0) && TileMap[int(y + h + dy) / TILE_SIZE][int(x + j) / TILE_SIZE] == '0')
             {
-                y = int(y);
+                cout << 3 << '\n';
+                y = int((y + dy) / TILE_SIZE) * TILE_SIZE;
                 break;
             }
             // ѕроверка пересикаечени€ со стеной при перемещении вверх.
-            if ((dy < 0) && TileMap[int(y + dy) / TILE_SIZE][int(x + j) / TILE_SIZE] == '0')
+            if ((dy < 0) && TileMap[int(y + dy) / TILE_SIZE][int(x + j + 0.1) / TILE_SIZE] == '0')
             {
+                cout << 4 << '\n';
                 y = int((y + dy + h) / TILE_SIZE) * TILE_SIZE;
                 break;
             }
@@ -170,7 +174,7 @@ public:
             x += dx;
         if(Y)
             y += dy;
-        cout << TileMap[y / TILE_SIZE][x / TILE_SIZE] << '\n';
+        cout << fixed << setprecision(18) << x << ' ' << y << '\n';
 
     }
 
