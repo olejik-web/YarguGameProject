@@ -269,9 +269,16 @@ public:
 
     qmap()
     {
-        mapRoom = vector<vector<char> >(sqrtCntRoom, vector<char>(sqrtCntRoom, ' '));
-        mapPaths = vector<vector<char> >(sqrtCntRoom * 2 - 1, vector<char>(sqrtCntRoom * 2 - 1, ' '));
-        mainMap = vector<vector<char> >(mapHieght, vector<char>(mapWidth, ' '));
+        mapRoom = vector<vector<char> >(sqrtCntRoom, vector<char>(sqrtCntRoom + 1, ' '));
+        mapPaths = vector<vector<char> >(sqrtCntRoom * 2 - 1, vector<char>(sqrtCntRoom * 2, ' '));
+        mainMap = vector<vector<char> >(mapHieght, vector<char>(mapWidth + 1, ' '));
+
+        for (int i = 0; i < sqrtCntRoom; i++)
+            mapRoom[i][sqrtCntRoom] = '\0';
+        for(int i = 0; i < sqrtCntRoom * 2 - 1; i++)
+            mapPaths[i][sqrtCntRoom * 2 - 1] = '\0';
+        for (int i = 0; i < mapHieght; i++)
+            mainMap[i][mapWidth] = '\0';
     }
 
     int getMaxCntRoom() { return maxCntRoom; }

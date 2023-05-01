@@ -21,7 +21,6 @@ public:
     Image image;
     Texture texture;
 
-
     bool isAttack = false;
     bool isRight = true;
     int Health = 5;
@@ -59,7 +58,7 @@ public:
     void DirClear() { dir = 0; } // Забыть направление, в котором бежал персонаж.
     void DirPlus(int n) { dir |= n; } // Сложение направление.
 
-    void setSpeed(float n) { speed = 5; } // Задание скорости передвижения персонажа.
+    void setSpeed(float n) { speed = n; } // Задание скорости передвижения персонажа.
 
     void move() // Обновление фреймов и вычисление нажатой клавиши перемещения.
     {
@@ -122,9 +121,11 @@ public:
         }
     }
 
-    void interactionWithMap(float& time, vector<vector<char> > TileMap)
+    void interactionWithMap(float& time, vector<vector<char> >& TileMap)
     {
         bool X = 0, Y = 0;
+        dx *= time;
+        dy *= time;
         for (int i = 0; i < h; i++)
         {
 
@@ -166,13 +167,14 @@ public:
                 Y = true;
         }
         if (X)
-            x += dx * time;
+            x += dx;
         if(Y)
-            y += dy * time;
+            y += dy;
+        cout << TileMap[y / TILE_SIZE][x / TILE_SIZE] << '\n';
 
     }
 
-    void update(float& time, vector<vector<char> > TileMap,View& view)
+    void update(float& time, vector<vector<char> >& TileMap,View& view)
     {
 
 
@@ -182,16 +184,9 @@ public:
         
         view.setCenter(getPlayerCoordinateX(), getPlayerCoordinateY());
 
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G) && !isAttack) { //ь=булевская переменая что герой аттакует
-            cout << dir << ' ' << speed << '\n';
-        }
-
-        sprite.setPosition(x, y);
-        interactionWithMap(time,TileMap);
+        interactionWithMap(time, TileMap);
         move();
-        //move();
-        Attack(time);
+        sprite.setPosition(x, y);
     }
 
     float getPlayerCoordinateX() { return x; }

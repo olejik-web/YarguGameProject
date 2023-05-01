@@ -1,19 +1,9 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/System/Clock.hpp>
-#include <iostream>
-#include <cmath>
-#include<iomanip>
-#include<Windows.h>
-//#include "Maps.h";
+#include "head.h";
 #include "View.h";
 #include "Player.h";
 #include "map.h";
-//#include "Enemy.h";
-#include "EnemyTest.h";
-#include "Bullet.h"
-#include <string>
 
-#include <sstream>
+
 
 using namespace sf;
 using namespace std;
@@ -23,7 +13,7 @@ int SCREENY = 600;
 
 vector<vector<char> > TileMap;
 
-void GenerateMap(Sprite& s_map, RenderWindow& window, Player& play, Enemy& Enemy, float& time) {
+void GenerateMap(Sprite& s_map, RenderWindow& window, Player& play, float& time) {
     for (int i = 0; i < HEIGHT_MAP; i++)
         for (int j = 0; j < WIDTH_MAP; j++)
         {
@@ -46,6 +36,7 @@ int main()
     Map.initMap();
     Map.initMainMap();
     Map.addDoor();
+    Map.printMap();
 
     TileMap = Map.getMainMap();
 
@@ -70,14 +61,12 @@ int main()
     //Player player("Assets/AnimationSheet_Character.png", 50, 50, 32, 32);
     Player player("Assets/AnimationSheet_Character.png",
         Map.getSpawn(), Map.getRoomWidth(), Map.getRoomHieght(), 32, 32);
-    Ghost ghost("Assets/AnimationSheet_Character.png", 3 * 32, 9 * 32, 32, 32);
-    Bullet bullet("Assets/Just_arrow.png", 50, 50, 0.5);
 
     while (window.isOpen())
     {
         float time = clock.getElapsedTime().asMicroseconds();
         clock.restart();
-        time /= 16000;
+        time /= 3000;
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -103,15 +92,10 @@ int main()
         textSpawnPoint.setPosition(view.getCenter().x - SCREENX / 2, view.getCenter().y - SCREENY / 2 + 32);
 
         window.clear(Color(128, 106, 89));
-        GenerateMap(s_map, window, player, ghost, time); // Генерация карты
+        GenerateMap(s_map, window, player, time); // Генерация карты
         player.update(time, TileMap, view);
-        ghost.update(time, player, TileMap);
-        bullet.Update(time, player.getPlayerCoordinateX(), player.getPlayerCoordinateY());
 
         window.draw(player.sprite);
-        window.draw(ghost.sprite);
-        window.draw(bullet.sprite);
-
         window.draw(textCoord);
         window.draw(textSpawnPoint);
 
