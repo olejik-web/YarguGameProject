@@ -1,7 +1,10 @@
 #include "head.h";
+
 #include "View.h";
 #include "Player.h";
 #include "map.h";
+#include "object.h"
+#include "objects.h"
 
 
 
@@ -17,10 +20,12 @@ void GenerateMap(Sprite& s_map, RenderWindow& window, Player& play, float& time)
     for (int i = 0; i < HEIGHT_MAP; i++)
         for (int j = 0; j < WIDTH_MAP; j++)
         {
-            if (TileMap[i][j] == ' ')  s_map.setTextureRect(IntRect(64, 224, 32, 32)); //если встретили символ пробел, то рисуем 1й квадратик
+            //s_map.setTextureRect(IntRect(room_item_id[TileMap[i][j]].getImageCoord().first, room_item_id[TileMap[i][j]].getImageCoord().second, room_item_id[TileMap[i][j]].getTileHeight(), room_item_id[TileMap[i][j]].getTileWidth()));
+            if (TileMap[i][j] == ' ')  s_map.setTextureRect(IntRect(2 * 32, 2 * 32, 32, 32)); //если встретили символ пробел, то рисуем 1й квадратик
             if (TileMap[i][j] == 's')  s_map.setTextureRect(IntRect(160, 160, 32, 32));//если встретили символ s, то рисуем 2й квадратик
-            if ((TileMap[i][j] == '0')) s_map.setTextureRect(IntRect(160, 160, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
+            if ((TileMap[i][j] == '0')) s_map.setTextureRect(IntRect(8 * 32, 7 * 32, 32, 32));//если встретили символ 0, то рисуем 3й квадратик
             if ((TileMap[i][j] == '+')) { s_map.setTextureRect(IntRect(0, 160, 32, 32)); }
+            if ((TileMap[i][j] == 'c')) { s_map.setTextureRect(IntRect(0, 160, 32, 32)); }
             s_map.setPosition(j * 32, i * 32);//по сути раскидывает квадратики, превращая в карту. то есть задает каждому из них позицию. если убрать, то вся карта нарисуется в одном квадрате 32*32 и мы увидим один квадрат
 
 
@@ -49,7 +54,7 @@ int main()
     Text textSpawnPoint("", font, 16);
 
     Image map_image;//объект изображения для карты
-    map_image.loadFromFile("Assets/Kings and Pigs/Sprites/14-TileSets/Terrain (32x32).png");//загружаем файл для карты
+    map_image.loadFromFile("Tileset.png");//загружаем файл для карты
     Texture tmap;//текстура карты
     tmap.loadFromImage(map_image);//заряжаем текстуру картинкой
     Sprite s_map;//создаём спрайт для карты

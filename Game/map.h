@@ -6,6 +6,7 @@
 #include <stack>
 #include <set>
 
+#include "object.h"
 #include "pattern.h"
 
 using namespace std;
@@ -20,7 +21,7 @@ private:
     vector<vector<char> > mapPaths;
     vector<vector<char> > mainMap;
     int minCntRoom = 7, maxCntRoom = 15;
-    int sqrtCntRoom = 4; // Кол-во комнат в высоты и/или в ширину.
+    int sqrtCntRoom = 5; // Кол-во комнат в высоты и/или в ширину.
     int roomHieght = 16, roomWidth = 16; // Высота и ширина комнат.
     int mapHieght = roomHieght * sqrtCntRoom * 2 - roomHieght;
     int mapWidth = roomWidth * sqrtCntRoom * 2 - roomWidth;
