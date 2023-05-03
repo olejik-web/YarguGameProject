@@ -18,13 +18,16 @@ private:
 	long double radius;
 
 public:
-	object(string file, int imageCoordX = 1, int imageCoordY = 1, int tile_width = 1, int tile_height = 1, bool collision = 0)
+	object(string file = "f", int imageCoordX = 1, int imageCoordY = 1, int tile_width = 1, int tile_height = 1,
+		bool collision = 0, bool reaction_to_the_player = 0)
 	{
 		file_name = file;
 		this->imageCoordX = imageCoordX;
 		this->imageCoordY = imageCoordY;
 		this->tile_width = tile_width;
 		this->tile_height = tile_height;
+		this->collision = collision;
+		this->reaction_to_the_player = reaction_to_the_player;
 	}
 
 	string getFileName() { return file_name; }

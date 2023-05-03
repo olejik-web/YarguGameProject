@@ -24,8 +24,8 @@ object wall_angle_in_45_2("Tileset.png", 5 * 32, 5 * 32, 32, 32, 1);
 object wall_angle_in_135_1("Tileset.png", 0 * 32, 5 * 32, 32, 32, 1);
 object wall_angle_in_135_2("Tileset.png", 5 * 32, 4 * 32, 32, 32, 1);
 
-object wall_angle_in_225_1("Tileset.png", 0 * 32, 4 * 32, 32, 32, 1);
-object wall_angle_in_315_2("Tileset.png", 5 * 32, 4 * 32, 32, 32, 1);
+object wall_angle_in_225("Tileset.png", 0 * 32, 4 * 32, 32, 32, 1);
+object wall_angle_in_315("Tileset.png", 5 * 32, 4 * 32, 32, 32, 1);
 
 object right_wall_1("Tileset.png", 5 * 32, 0 * 32, 32, 32, 1);
 object right_wall_2("Tileset.png", 5 * 32, 1 * 32, 32, 32, 1);
@@ -75,8 +75,35 @@ object floor_angle_180("Tileset.png", 1 * 32, 2 * 32, 32, 32);
 object floor_angle_270_1("Tileset.png", 2 * 32, 3 * 32, 32, 32);
 object floor_angle_270_2("Tileset.png", 3 * 32, 3 * 32, 32, 32);
 
+object vertical_closed_left_door("Tileset.png", 7 * 32, 5 * 32, 32, 32, 1);
+object vertical_open_left_door("Tileset.png", 7 * 32, 4 * 32, 32, 32);
+
+object vertical_closed_right_door("Tileset.png", 8 * 32, 5 * 32, 32, 32, 1);
+object vertical_open_right_door("Tileset.png", 8 * 32, 4 * 32, 32, 32);
+
+object horizontal_open_left_door("Tileset.png", 6 * 32, 6 * 32, 32, 32);
+object horizontal_open_right_door("Tileset.png", 7 * 32, 6 * 32, 32, 32);
+
+object horizontal_closed_left_door_upper("Tileset.png", 7 * 32, 4 * 32, 32, 32, 1);
+object horizontal_closer_left_door_lower("Tileset.png", 7 * 32, 5 * 32, 32, 32, 1);
+
+object horizontal_closed_right_door_upper("Tileset.png", 8 * 32, 4 * 32, 32, 32, 1);
+object horizontal_closer_right_door_lower("Tileset.png", 8 * 32, 5 * 32, 32, 32, 1);
+
+object avoid("Tileset.png", 8 * 32, 7 * 32, 32, 32);
+
 map<int, object> room_item_id
 {
+	{58, vertical_closed_left_door},
+	{59, vertical_open_left_door},
+	{60, vertical_closed_right_door},
+	{61, vertical_open_right_door},
+	{62, horizontal_open_left_door},
+	{63, horizontal_open_right_door},
+	{64, horizontal_closed_left_door_upper},
+	{65, horizontal_closer_left_door_lower},
+	{66, horizontal_closed_right_door_upper},
+	{67, horizontal_closer_right_door_lower},
 	{0, upper_wall_1},
 	{1, upper_wall_2},
 	{2, upper_wall_3},
@@ -89,12 +116,11 @@ map<int, object> room_item_id
 	{9, lower_wall_6},
 	{10, wall_angle_in_45_1},
 	{11, wall_angle_in_45_2},
-	//{12, wall_angle_in_125_1},
-	//{13, wall_angle_in_125_2},
-	{14, wall_angle_in_135_1},
-	{15, wall_angle_in_135_2},
-	{16, wall_angle_in_225_1},
-	{17, wall_angle_in_315_2},
+	{12, wall_angle_in_135_1},
+	{13, wall_angle_in_135_2},
+	{14, avoid},
+	{16, wall_angle_in_225},
+	{17, wall_angle_in_315},
 	{18, left_wall_1},
 	{19, left_wall_2},
 	{20, left_wall_3},
@@ -130,5 +156,9 @@ map<int, object> room_item_id
 	{50, floor_angle_90_6},
 	{51, floor_angle_180},
 	{52, floor_angle_270_1},
-	{53, floor_angle_270_2}
+	{53, floor_angle_270_2},
+	{54, right_wall_1},
+	{55, right_wall_2},
+	{56, right_wall_3},
+	{57, right_wall_4}
 };

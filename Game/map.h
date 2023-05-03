@@ -19,9 +19,10 @@ class qmap
 private:
     vector<vector<char> > mapRoom;
     vector<vector<char> > mapPaths;
-    vector<vector<char> > mainMap;
-    int minCntRoom = 7, maxCntRoom = 15;
-    int sqrtCntRoom = 5; // Кол-во комнат в высоты и/или в ширину.
+    vector<vector<int> > mainMap;
+    vector<vector<int> > MapWithObject;
+    int minCntRoom = 7, maxCntRoom = 16;
+    int sqrtCntRoom = 4; // Кол-во комнат в высоты и/или в ширину.
     int roomHieght = 16, roomWidth = 16; // Высота и ширина комнат.
     int mapHieght = roomHieght * sqrtCntRoom * 2 - roomHieght;
     int mapWidth = roomWidth * sqrtCntRoom * 2 - roomWidth;
@@ -272,14 +273,8 @@ public:
     {
         mapRoom = vector<vector<char> >(sqrtCntRoom, vector<char>(sqrtCntRoom + 1, ' '));
         mapPaths = vector<vector<char> >(sqrtCntRoom * 2 - 1, vector<char>(sqrtCntRoom * 2, ' '));
-        mainMap = vector<vector<char> >(mapHieght, vector<char>(mapWidth + 1, ' '));
-
-        for (int i = 0; i < sqrtCntRoom; i++)
-            mapRoom[i][sqrtCntRoom] = '\0';
-        for(int i = 0; i < sqrtCntRoom * 2 - 1; i++)
-            mapPaths[i][sqrtCntRoom * 2 - 1] = '\0';
-        for (int i = 0; i < mapHieght; i++)
-            mainMap[i][mapWidth] = '\0';
+        mainMap = vector<vector<int> >(mapHieght, vector<int>(mapWidth + 1, 14));
+        MapWithObject = vector<vector<int> >(mapHieght, vector<int>(mapWidth + 1, 14));
     }
 
     int getMaxCntRoom() { return maxCntRoom; }
@@ -289,7 +284,7 @@ public:
     int getRoomWidth() { return roomWidth; }
     int getMapHieght() { return mapHieght; }
     int getMapWidth() { return mapWidth; }
-    vector<vector<char> > getMainMap() { return mainMap; }
+    vector<vector<int> > getMainMap() { return mainMap; }
 
     void setMaxCntRoom(int value) { maxCntRoom = value; }
     void setMinCntRoom(int value) { minCntRoom = value; }
@@ -367,12 +362,13 @@ public:
             {
                 if (mapPaths[i][j] == 'r')
                 {
-                    int num = rand() % rooms.size();
-                    vector<string>& RandRoom = rooms[num];
+                    int num = rand() % Rooms.size();
+                    vector<vector<int> >& RandRoom = Rooms[num];
                     for (int i1 = 0; i1 < roomHieght; i1++)
                     {
                         for (int j1 = 0; j1 < roomWidth; j1++)
                         {
+                            //mainMap[i * roomHieght + i1][j * roomWidth + j1] = 0;
                             mainMap[i * roomHieght + i1][j * roomWidth + j1] = RandRoom[i1][j1];
                         }
                     }
@@ -380,23 +376,24 @@ public:
 
                 if (mapPaths[i][j] == 's')
                 {
-                    int num = rand() % rooms.size();
-                    vector<string>& RandRoom = rooms[num];
+                    int num = rand() % Rooms.size();
+                    vector<vector<int> >& RandRoom = Rooms[num];
                     for (int i1 = 0; i1 < roomHieght; i1++)
                     {
                         for (int j1 = 0; j1 < roomWidth; j1++)
                         {
+                            //mainMap[i * roomHieght + i1][j * roomWidth + j1] = 0;
                             mainMap[i * roomHieght + i1][j * roomWidth + j1] = RandRoom[i1][j1];
                         }
                     }
 
-                    mainMap[i * roomHieght + roomHieght / 2][j * roomWidth + roomWidth / 2] = '0';
+                    mainMap[i * roomHieght + roomHieght / 2][j * roomWidth + roomWidth / 2] = 20;
                 }
 
                 if (mapPaths[i][j] == '-')
                 {
-                    int num = rand() % corG.size();
-                    vector<string>& RandRoom = corG[num];
+                    int num = rand() % CorG.size();
+                    vector<vector<int> >& RandRoom = CorG[num];
                     for (int i1 = 0; i1 < roomHieght; i1++)
                     {
                         for (int j1 = 0; j1 < roomWidth; j1++)
@@ -405,10 +402,11 @@ public:
                         }
                     }
                 }
+
                 if (mapPaths[i][j] == '|')
                 {
-                    int num = rand() % corV.size();
-                    vector<string>& RandRoom = corV[num];
+                    int num = rand() % CorV.size();
+                    vector<vector<int> >& RandRoom = CorV[num];
                     for (int i1 = 0; i1 < roomHieght; i1++)
                     {
                         for (int j1 = 0; j1 < roomWidth; j1++)
@@ -430,25 +428,79 @@ public:
             {
                 if (mapPaths[i][j] == '-')
                 {
-                    mainMap[i * roomHieght + roomHieght / 2][j * roomWidth - 1] = ' ';
-                    mainMap[i * roomHieght + roomHieght / 2 - 1][j * roomWidth - 1] = ' ';
+                    mainMap[i * roomHieght + roomHieght / 2 - 1][j * roomWidth - 1] = 45;
+                    mainMap[i * roomHieght + roomHieght / 2][j * roomWidth - 1] = 53;
 
-                    mainMap[i * roomHieght + roomHieght / 2][(j + 1) * roomWidth] = ' ';
-                    mainMap[i * roomHieght + roomHieght / 2 - 1][(j + 1) * roomWidth] = ' ';
+                    // Добавление двери с текстурой слева.
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 2][j * roomWidth - 1] = 59;
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 1][j * roomWidth - 1] = 59;
+                    MapWithObject[i * roomHieght + roomHieght / 2][j * roomWidth - 1] = 58;
+
+                    mainMap[i * roomHieght + roomHieght / 2 - 2][j * roomWidth - 1] = 3;
+                    mainMap[i * roomHieght + roomHieght / 2 + 1][j * roomWidth - 1] = 12;
+
+                    mainMap[i * roomHieght + roomHieght / 2 - 1][j * roomWidth - 2] = 31;
+                    mainMap[i * roomHieght + roomHieght / 2][j * roomWidth - 2] = 32;
+
+                    mainMap[i * roomHieght + roomHieght / 2 - 1][(j + 1) * roomWidth] = 45;
+                    mainMap[i * roomHieght + roomHieght / 2][(j + 1) * roomWidth] = 53;
+
+                    // Добавление двери с текстурой справа.
+                    mainMap[i * roomHieght + roomHieght / 2 - 2][(j + 1) * roomWidth] = 61;
+                    mainMap[i * roomHieght + roomHieght / 2 - 1][(j + 1) * roomWidth] = 61;
+                    mainMap[i * roomHieght + roomHieght / 2][(j + 1) * roomWidth] = 60;
+
+                    mainMap[i * roomHieght + roomHieght / 2 - 2][(j + 1) * roomWidth] = 3;
+                    mainMap[i * roomHieght + roomHieght / 2 + 1][(j + 1) * roomWidth] = 10;
+
+                    mainMap[i * roomHieght + roomHieght / 2 - 1][(j + 1) * roomWidth + 1] = 31;
+                    mainMap[i * roomHieght + roomHieght / 2][(j + 1) * roomWidth + 1] = 32;
                 }
                 if (mapPaths[i][j] == '|')
                 {
-                    mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2] = ' ';
-                    mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = ' ';
+                    mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2] = 44;
+                    mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = 51;
 
-                    mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2] = ' ';
-                    mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 - 1] = ' ';
+                    // Добавление двери с текстурой снизу тунеля.
+                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2] = 44;
+                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2] = 44;
+                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = 51;
+
+                    mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2 + 1] = 12;
+                    mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 2] = 10;
+
+                    mainMap[i * roomHieght - 2][j * roomWidth + roomWidth / 2] = 28;
+                    mainMap[i * roomHieght - 2][j * roomWidth + roomWidth / 2 - 1] = 29;
+
+                    mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2] = 44;
+                    mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 - 1] = 51;
+
+                    mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 + 1] = 2;
+                    mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 - 2] = 3;
+
+                    mainMap[(i + 1) * roomHieght + 1][j * roomWidth + roomWidth / 2] = 30;
+                    mainMap[(i + 1) * roomHieght + 1][j * roomWidth + roomWidth / 2 - 1] = 31;
                 }
             }
         }
     }
 
-    //////////// Вывести карту путей на консоль ////////////
+    ////////// Вернуть границы комнаты, в которой находится персонаж. //////////
+    pair<pair<int, int>, pair<int, int> > coordinatesOfTheRoomByPlayer(int coordPlayerX, int coordPlayerY, int TileSize)
+    {
+        int numRoomX = coordPlayerX / (TileSize * roomWidth * 2);
+        int numRoomY = coordPlayerY / (TileSize * roomHieght * 2);
+        
+        pair<pair<int, int>, pair<int, int> > rez;
+        rez.first.first = numRoomX * (TileSize * roomWidth * 2);
+        rez.first.second = numRoomY * (TileSize * roomHieght * 2);
+        rez.second.first = numRoomX * (TileSize * roomWidth * 2);
+        rez.second.second = numRoomY * (TileSize * roomHieght * 2);
+
+        return rez;
+    }
+
+    ////////// Вывести карту путей на консоль ////////////
     void printMap()
     {
         for (int i = 0; i < mapHieght; i++)
