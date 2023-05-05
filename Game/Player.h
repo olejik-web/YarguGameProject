@@ -134,14 +134,12 @@ public:
             // ѕроверка пересикаечени€ со стеной при перемещении вправо.
             if ((dx > 0) && room_item_id[TileMap[int(y + i) / TILE_SIZE][int(x + w + dx) / TILE_SIZE]].getColision() == 1)
             {
-                cout << 1 << '\n';
                 x = int((x + dx) / TILE_SIZE) * TILE_SIZE;
                 break;
             }
             // ѕроверка пересикаечени€ со стеной при перемещении влево.
             if ((dx < 0) && room_item_id[TileMap[int(y + i) / TILE_SIZE][int(x + dx) / TILE_SIZE]].getColision() == 1)
             {
-                cout << 2 << '\n';
                 x = int((x + dx) / TILE_SIZE + 1) * TILE_SIZE;
                 break;
             }
@@ -156,14 +154,12 @@ public:
             // ѕроверка пересикаечени€ со стеной при перемещении вниз.
             if ((dy > 0) && room_item_id[TileMap[int(y + h + dy) / TILE_SIZE][int(x + j) / TILE_SIZE]].getColision() == 1)
             {
-                cout << 3 << '\n';
                 y = int((y + dy) / TILE_SIZE) * TILE_SIZE;
                 break;
             }
             // ѕроверка пересикаечени€ со стеной при перемещении вверх.
             if ((dy < 0) && room_item_id[TileMap[int(y + dy) / TILE_SIZE][int(x + j + 0.1) / TILE_SIZE]].getColision() == 1)
             {
-                cout << 4 << '\n';
                 y = int((y + dy + h) / TILE_SIZE) * TILE_SIZE;
                 break;
             }
@@ -176,7 +172,6 @@ public:
             x += dx;
         if(Y)
             y += dy;
-        cout << fixed << setprecision(18) << x << ' ' << y << '\n';
 
     }
 

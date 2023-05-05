@@ -29,6 +29,8 @@ private:
     int percentageOfPaths = 20; // Ўанс удалени€ коридора, при условии, что кол-во доступных комнат не изменитс€.
     pair<int, int> Spawn = pair<int, int>(-1, -1);
 
+    bool vision_barrier = false;
+
     //////////// ”далить случайные коридоры. ////////////
     void RandCorridors()
     {
@@ -274,7 +276,7 @@ public:
         mapRoom = vector<vector<char> >(sqrtCntRoom, vector<char>(sqrtCntRoom + 1, ' '));
         mapPaths = vector<vector<char> >(sqrtCntRoom * 2 - 1, vector<char>(sqrtCntRoom * 2, ' '));
         mainMap = vector<vector<int> >(mapHieght, vector<int>(mapWidth + 1, 14));
-        MapWithObject = vector<vector<int> >(mapHieght, vector<int>(mapWidth + 1, 14));
+        MapWithObject = vector<vector<int> >(mapHieght, vector<int>(mapWidth + 1, 68));
     }
 
     int getMaxCntRoom() { return maxCntRoom; }
@@ -285,6 +287,7 @@ public:
     int getMapHieght() { return mapHieght; }
     int getMapWidth() { return mapWidth; }
     vector<vector<int> > getMainMap() { return mainMap; }
+    vector<vector<int> > getMapWithObject() { return MapWithObject; }
 
     void setMaxCntRoom(int value) { maxCntRoom = value; }
     void setMinCntRoom(int value) { minCntRoom = value; }
@@ -432,9 +435,9 @@ public:
                     mainMap[i * roomHieght + roomHieght / 2][j * roomWidth - 1] = 53;
 
                     // ƒобавление двери с текстурой слева.
-                    MapWithObject[i * roomHieght + roomHieght / 2 - 2][j * roomWidth - 1] = 59;
-                    MapWithObject[i * roomHieght + roomHieght / 2 - 1][j * roomWidth - 1] = 59;
-                    MapWithObject[i * roomHieght + roomHieght / 2][j * roomWidth - 1] = 58;
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 2][j * roomWidth - 1] = 71;
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 1][j * roomWidth - 1] = 71;
+                    MapWithObject[i * roomHieght + roomHieght / 2][j * roomWidth - 1] = 71;
 
                     mainMap[i * roomHieght + roomHieght / 2 - 2][j * roomWidth - 1] = 3;
                     mainMap[i * roomHieght + roomHieght / 2 + 1][j * roomWidth - 1] = 12;
@@ -446,9 +449,9 @@ public:
                     mainMap[i * roomHieght + roomHieght / 2][(j + 1) * roomWidth] = 53;
 
                     // ƒобавление двери с текстурой справа.
-                    mainMap[i * roomHieght + roomHieght / 2 - 2][(j + 1) * roomWidth] = 61;
-                    mainMap[i * roomHieght + roomHieght / 2 - 1][(j + 1) * roomWidth] = 61;
-                    mainMap[i * roomHieght + roomHieght / 2][(j + 1) * roomWidth] = 60;
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 2][(j + 1) * roomWidth] = 72;
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 1][(j + 1) * roomWidth] = 72;
+                    MapWithObject[i * roomHieght + roomHieght / 2][(j + 1) * roomWidth] = 72;
 
                     mainMap[i * roomHieght + roomHieght / 2 - 2][(j + 1) * roomWidth] = 3;
                     mainMap[i * roomHieght + roomHieght / 2 + 1][(j + 1) * roomWidth] = 10;
@@ -462,9 +465,8 @@ public:
                     mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = 51;
 
                     // ƒобавление двери с текстурой снизу тунел€.
-                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2] = 44;
-                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2] = 44;
-                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = 51;
+                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2] = 2;
+                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = 1;
 
                     mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2 + 1] = 12;
                     mainMap[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 2] = 10;
@@ -475,11 +477,52 @@ public:
                     mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2] = 44;
                     mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 - 1] = 51;
 
+                    // ƒобавление двери с текстурой снизу тунел€.
+                    MapWithObject[(i + 1) * roomHieght - 1][j * roomWidth + roomWidth / 2] = 70;
+                    MapWithObject[(i + 1) * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = 70;
+                    MapWithObject[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2] = 1;
+                    MapWithObject[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 - 1] = 2;
+
                     mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 + 1] = 2;
                     mainMap[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 - 2] = 3;
 
                     mainMap[(i + 1) * roomHieght + 1][j * roomWidth + roomWidth / 2] = 30;
                     mainMap[(i + 1) * roomHieght + 1][j * roomWidth + roomWidth / 2 - 1] = 31;
+                }
+            }
+        }
+    }
+
+    void SwitchTheBarrier()
+    {
+        vision_barrier = !vision_barrier;
+        for (int i = 0; i < sqrtCntRoom * 2 - 1; i++)
+        {
+            for (int j = 0; j < sqrtCntRoom * 2 - 1; j++)
+            {
+                if (mapPaths[i][j] == '-')
+                {
+                    // ƒобавление двери с текстурой слева.
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 2][j * roomWidth - 1] = (vision_barrier ? 71 : 68);
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 1][j * roomWidth - 1] = (vision_barrier ? 71 : 68);
+                    MapWithObject[i * roomHieght + roomHieght / 2][j * roomWidth - 1] = (vision_barrier ? 71 : 68);
+
+                    // ƒобавление двери с текстурой справа.
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 2][(j + 1) * roomWidth] = (vision_barrier ? 72 : 68);
+                    MapWithObject[i * roomHieght + roomHieght / 2 - 1][(j + 1) * roomWidth] = (vision_barrier ? 72 : 68);
+                    MapWithObject[i * roomHieght + roomHieght / 2][(j + 1) * roomWidth] = (vision_barrier ? 72 : 68);
+                }
+                if (mapPaths[i][j] == '|')
+                {
+                    // ƒобавление двери с текстурой снизу тунел€.
+                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2] = (vision_barrier ? 2 : 68);
+                    MapWithObject[i * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = (vision_barrier ? 2 : 68);
+
+                    // ƒобавление двери с текстурой снизу тунел€.
+                    MapWithObject[(i + 1) * roomHieght - 1][j * roomWidth + roomWidth / 2] = (vision_barrier ? 70 : 68);
+                    MapWithObject[(i + 1) * roomHieght - 1][j * roomWidth + roomWidth / 2 - 1] = (vision_barrier ? 70 : 68);
+                    MapWithObject[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2] = (vision_barrier ? 1 : 68);
+                    MapWithObject[(i + 1) * roomHieght][j * roomWidth + roomWidth / 2 - 1] = (vision_barrier ? 2 : 68);
                 }
             }
         }

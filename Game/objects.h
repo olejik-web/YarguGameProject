@@ -81,29 +81,26 @@ object vertical_open_left_door("Tileset.png", 7 * 32, 4 * 32, 32, 32);
 object vertical_closed_right_door("Tileset.png", 8 * 32, 5 * 32, 32, 32, 1);
 object vertical_open_right_door("Tileset.png", 8 * 32, 4 * 32, 32, 32);
 
-object horizontal_open_left_door("Tileset.png", 6 * 32, 6 * 32, 32, 32);
-object horizontal_open_right_door("Tileset.png", 7 * 32, 6 * 32, 32, 32);
+object horizontal_closed_left_door("Tileset.png", 6 * 32, 6 * 32, 32, 32);
+object horizontal_closed_right_door("Tileset.png", 7 * 32, 6 * 32, 32, 32);
 
-object horizontal_closed_left_door_upper("Tileset.png", 7 * 32, 4 * 32, 32, 32, 1);
-object horizontal_closer_left_door_lower("Tileset.png", 7 * 32, 5 * 32, 32, 32, 1);
+object horizontal_open_left_door_upper("Tileset.png", 7 * 32, 4 * 32, 32, 32, 1);
+object horizontal_open_left_door_lower("Tileset.png", 7 * 32, 5 * 32, 32, 32, 1);
 
-object horizontal_closed_right_door_upper("Tileset.png", 8 * 32, 4 * 32, 32, 32, 1);
-object horizontal_closer_right_door_lower("Tileset.png", 8 * 32, 5 * 32, 32, 32, 1);
+object horizontal_open_right_door_upper("Tileset.png", 8 * 32, 4 * 32, 32, 32, 1);
+object horizontal_open_right_door_lower("Tileset.png", 8 * 32, 5 * 32, 32, 32, 1);
+
+object upper_barrier("Tileset.png", 6 * 32, 4 * 32, 32, 32, 1);
+object lower_barrier("Tileset.png", 6 * 32, 5 * 32, 32, 32, 1);
+
+object left_barrier("Tileset.png", 6 * 32, 3 * 32, 32, 32, 1);
+object right_barrier("Tileset.png", 7 * 32, 3 * 32, 32, 32, 1);
 
 object avoid("Tileset.png", 8 * 32, 7 * 32, 32, 32);
+object clear("Tileset.png", 12 * 32, 11 * 32, 32, 32);
 
 map<int, object> room_item_id
 {
-	{58, vertical_closed_left_door},
-	{59, vertical_open_left_door},
-	{60, vertical_closed_right_door},
-	{61, vertical_open_right_door},
-	{62, horizontal_open_left_door},
-	{63, horizontal_open_right_door},
-	{64, horizontal_closed_left_door_upper},
-	{65, horizontal_closer_left_door_lower},
-	{66, horizontal_closed_right_door_upper},
-	{67, horizontal_closer_right_door_lower},
 	{0, upper_wall_1},
 	{1, upper_wall_2},
 	{2, upper_wall_3},
@@ -160,5 +157,20 @@ map<int, object> room_item_id
 	{54, right_wall_1},
 	{55, right_wall_2},
 	{56, right_wall_3},
-	{57, right_wall_4}
+	{57, right_wall_4},
+	{58, vertical_closed_left_door},
+	{59, vertical_open_left_door},
+	{60, vertical_closed_right_door},
+	{61, vertical_open_right_door},
+	{62, horizontal_open_left_door_upper},
+	{63, horizontal_open_left_door_lower},
+	{64, horizontal_closed_left_door},
+	{65, horizontal_closed_right_door},
+	{66, horizontal_open_right_door_upper},
+	{67, horizontal_open_right_door_lower},
+	{68, clear},
+	{69, upper_barrier},
+	{70, lower_barrier},
+	{71, left_barrier},
+	{72, right_barrier}
 };
