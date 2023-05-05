@@ -175,6 +175,66 @@ public:
 
     }
 
+    void interactionWithMap(float& time, vector<vector<int> >& TileMap, vector<vector<int> >& ObjectMap)
+    {
+        bool X = 0, Y = 0;
+        dx *= time;
+        dy *= time;
+        for (long double i = 0; i < h; i += 1)
+        {
+
+            // Проверка пересикаечения со стеной при перемещении вправо.
+            if ((dx > 0) && 
+                (room_item_id[TileMap[int(y + i) / TILE_SIZE][int(x + w + dx) / TILE_SIZE]].getColision() == 1
+                    || room_item_id[ObjectMap[int(y + i) / TILE_SIZE][int(x + w + dx) / TILE_SIZE]].getColision() == 1))
+            {
+                x = int((x + dx) / TILE_SIZE) * TILE_SIZE;
+                break;
+            }
+            // Проверка пересикаечения со стеной при перемещении влево.
+            if ((dx < 0) &&
+                (room_item_id[TileMap[int(y + i) / TILE_SIZE][int(x + dx) / TILE_SIZE]].getColision() == 1
+                    || room_item_id[ObjectMap[int(y + i) / TILE_SIZE][int(x + dx) / TILE_SIZE]].getColision() == 1))
+            {
+                x = int((x + dx) / TILE_SIZE + 1) * TILE_SIZE;
+                break;
+            }
+
+            // Прибавляем смещение к координатам персонажа.
+            if (i == h - 1)
+                X = true;
+        }
+
+        for (long double j = 0; j < w; j += 1)
+        {
+            // Проверка пересикаечения со стеной при перемещении вниз.
+            if ((dy > 0) &&
+                (room_item_id[TileMap[int(y + h + dy) / TILE_SIZE][int(x + j) / TILE_SIZE]].getColision() == 1
+                    || room_item_id[ObjectMap[int(y + h + dy) / TILE_SIZE][int(x + j) / TILE_SIZE]].getColision() == 1))
+            {
+                y = int((y + dy) / TILE_SIZE) * TILE_SIZE;
+                break;
+            }
+            // Проверка пересикаечения со стеной при перемещении вверх.
+            if ((dy < 0) && 
+                (room_item_id[TileMap[int(y + dy) / TILE_SIZE][int(x + j + 0.1) / TILE_SIZE]].getColision() == 1 ||
+                    room_item_id[ObjectMap[int(y + dy) / TILE_SIZE][int(x + j + 0.1) / TILE_SIZE]].getColision() == 1))
+            {
+                y = int((y + dy + h) / TILE_SIZE) * TILE_SIZE;
+                break;
+            }
+
+            // Прибавляем смещение к координатам персонажа.
+            if (j == w - 1)
+                Y = true;
+        }
+        if (X)
+            x += dx;
+        if (Y)
+            y += dy;
+
+    }
+
     void update(float& time, vector<vector<int> >& TileMap,View& view)
     {
 
@@ -186,6 +246,21 @@ public:
         view.setCenter(getPlayerCoordinateX(), getPlayerCoordinateY());
 
         interactionWithMap(time, TileMap);
+        move();
+        sprite.setPosition(x, y);
+    }
+
+    void update(float& time, vector<vector<int> >& TileMap, vector<vector<int> >& ObjectMap, View& view)
+    {
+
+
+        dx = ((1 << 0) & dir ? 1 : 0) * speed - ((1 << 1) & dir ? 1 : 0) * speed; // Вычисляем смещение по x через биты dir.
+        dy = ((1 << 2) & dir ? 1 : 0) * speed - ((1 << 3) & dir ? 1 : 0) * speed; // Вычисляем смещение по y через биты dir.
+        DirClear();
+
+        view.setCenter(getPlayerCoordinateX(), getPlayerCoordinateY());
+
+        interactionWithMap(time, TileMap, ObjectMap);
         move();
         sprite.setPosition(x, y);
     }
