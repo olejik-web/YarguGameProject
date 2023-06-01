@@ -258,7 +258,8 @@ public:
         dy = ((1 << 2) & dir ? 1 : 0) * speed - ((1 << 3) & dir ? 1 : 0) * speed; // Вычисляем смещение по y через биты dir.
         DirClear();
 
-        view.setCenter(getPlayerCoordinateX(), getPlayerCoordinateY());
+        //view.setCenter(getPlayerCoordinateX(), getPlayerCoordinateY());
+        passiveSmoothCamera(getPlayerCoordinateX(), getPlayerCoordinateY(), TILE_SIZE);
 
         interactionWithMap(time, TileMap, ObjectMap);
         move();

@@ -21,13 +21,13 @@ private:
     vector<vector<char> > mapPaths;
     vector<vector<int> > mainMap;
     vector<vector<int> > MapWithObject;
-    int minCntRoom = 7, maxCntRoom = 16;
-    int sqrtCntRoom = 4; //  ол-во комнат в высоты и/или в ширину.
+    int minCntRoom = 80, maxCntRoom = 1000000;
+    int sqrtCntRoom = 100; //  ол-во комнат в высоты и/или в ширину.
     int roomHieght = 16, roomWidth = 16; // ¬ысота и ширина комнат.
     int mapHieght = roomHieght * sqrtCntRoom * 2 - roomHieght;
     int mapWidth = roomWidth * sqrtCntRoom * 2 - roomWidth;
     int percentageOfPaths = 20; // Ўанс удалени€ коридора, при условии, что кол-во доступных комнат не изменитс€.
-    pair<int, int> Spawn = pair<int, int>(-1, -1);
+    pair<int, int> Spawn = pair<int, int>(0, 0);
 
     bool vision_barrier = false;
 
@@ -537,10 +537,21 @@ public:
         pair<pair<int, int>, pair<int, int> > rez;
         rez.first.first = numRoomX * (TileSize * roomWidth * 2);
         rez.first.second = numRoomY * (TileSize * roomHieght * 2);
-        rez.second.first = numRoomX * (TileSize * roomWidth * 2);
-        rez.second.second = numRoomY * (TileSize * roomHieght * 2);
+        rez.second.first = numRoomX * (TileSize * roomWidth * 2) + TileSize * roomWidth;
+        rez.second.second = numRoomY * (TileSize * roomHieght * 2) + TileSize * roomHieght;
 
         return rez;
+    }
+
+    ////////// ѕроверка, в комнате ли персонаж. ////////////
+    bool characterInTheRoom(int coordPlayerX, int coordPlayerY, int TileSize)
+    {
+        pair<pair<int, int>, pair<int, int> > coordRoom = coordinatesOfTheRoomByPlayer(coordPlayerX, coordPlayerY, TileSize);
+        if (!(coordRoom.first.first <= coordPlayerX && coordPlayerX <= coordRoom.second.first))
+            return false;
+        if (!(coordRoom.first.second <= coordPlayerY && coordPlayerY <= coordRoom.second.second))
+            return false;
+        return true;
     }
 
     ////////// ¬ывести карту путей на консоль ////////////
