@@ -15,6 +15,9 @@ void getplayercoordinateforview(float x, float y) {
 
 void passiveSmoothCamera(float x, float y, float PersonSize)
 {
+	//if (abs(y - coordCameraY) < 50)
+	//	coordCameraY = y - 0.002 * (y - coordCameraY) / abs(y - coordCameraY);
+
 	x += PersonSize / 2;
 	if (abs(x - coordCameraX) > 50)
 		coordCameraX = x - 49.99 * (x - coordCameraX) / abs(x - coordCameraX);

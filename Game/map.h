@@ -27,7 +27,7 @@ private:
     int mapHieght = roomHieght * sqrtCntRoom * 2 - roomHieght;
     int mapWidth = roomWidth * sqrtCntRoom * 2 - roomWidth;
     int percentageOfPaths = 20; // Шанс удаления коридора, при условии, что кол-во доступных комнат не изменится.
-    pair<int, int> Spawn = pair<int, int>(0, 0);
+    pair<int, int> Spawn = pair<int, int>(-1, -1);
 
     bool vision_barrier = false;
 
@@ -243,7 +243,7 @@ private:
             for (int i = 0; i < sqrtCntRoom && flag; i++)
                 for (int j = 0; j < sqrtCntRoom && flag; j++)
                 {
-                    mapRoom[i][j] = (mapRoom[i][j] == 'r' ? (rand() % 100 == 5 ? 's' : 'r') : ' ');
+                    mapRoom[i][j] = (mapRoom[i][j] == 'r' ? (rand() % 100 == 1 ? 's' : 'r') : ' ');
                     if (mapRoom[i][j] == 's')
                     {
                         flag = !flag;

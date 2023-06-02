@@ -119,6 +119,14 @@ int main()
         GenerateMap(m_map, window, player, time, 50); // Генерация карты
         player.update(time, TileMap, ObjectMap, view);
         Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32);
+        if (Map.characterInTheRoom(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32))
+        {
+	    view.setCenter(Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).first.first +
+		(Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).second.first - Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).first.first) * 0.5,
+		Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).first.second +
+		(-Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).first.second + Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).second.second) * 0.5);
+        }
+
 
         window.draw(player.sprite);
         window.draw(textCoord);
