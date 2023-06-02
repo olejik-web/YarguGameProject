@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include "map.h"
 using namespace sf;
 
 sf::View view;
