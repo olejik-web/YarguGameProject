@@ -26,7 +26,7 @@ void GenerateMap(Sprite& m_map, RenderWindow& window, Player& play, float& time,
             // Рисует тайлы по карте индексов. Карта - Map, индексы -  room_item_id.
             m_map.setTextureRect(IntRect(room_item_id[TileMap[i][j]].getImageCoord().first, room_item_id[TileMap[i][j]].getImageCoord().second, room_item_id[TileMap[i][j]].getTileHeight(), room_item_id[TileMap[i][j]].getTileWidth()));
             m_map.setPosition(j * 32, i * 32); // Задаёт координаты для тайлов.
-            m_map.setScale(1.001, 1.001);
+            m_map.setScale(1.001, 1.01);
             window.draw(m_map); // Отрисовывает изображение.
         }
     for (int i = max(0, x - radius); i < min(HEIGHT_MAP, x + radius); i++)
@@ -37,7 +37,7 @@ void GenerateMap(Sprite& m_map, RenderWindow& window, Player& play, float& time,
             // Рисует тайлы по карте индексов. Карта - Map, индексы -  room_item_id.
             m_map.setTextureRect(IntRect(room_item_id[ObjectMap[i][j]].getImageCoord().first, room_item_id[ObjectMap[i][j]].getImageCoord().second, room_item_id[ObjectMap[i][j]].getTileHeight(), room_item_id[ObjectMap[i][j]].getTileWidth()));
             m_map.setPosition(j * 32, i * 32); // Задаёт координаты для тайлов.
-            m_map.setScale(1.001, 1.001);
+            m_map.setScale(1.001, 1.01);
             window.draw(m_map); // Отрисовывает изображение.
         }
 
@@ -119,13 +119,7 @@ int main()
         GenerateMap(m_map, window, player, time, 50); // Генерация карты
         player.update(time, TileMap, ObjectMap, view);
         Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32);
-        if (Map.characterInTheRoom(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32))
-        {
-	    view.setCenter(Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).first.first +
-		(Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).second.first - Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).first.first) * 0.5,
-		Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).first.second +
-		(-Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).first.second + Map.coordinatesOfTheRoomByPlayer(player.getPlayerCoordinateX(), player.getPlayerCoordinateY(), 32).second.second) * 0.5);
-        }
+
 
 
         window.draw(player.sprite);
