@@ -22,7 +22,7 @@ void passiveSmoothCamera(float x, float y, float time, float PersonSize)
 	if (abs(x - coordCameraX) > 20)
 		coordCameraX += (time / 250 * abs(x - coordCameraX)) * (x - coordCameraX) / abs(x - coordCameraX);
 	if (abs(x - coordCameraX) > 200)
-		coordCameraX += x - 200 * (x - coordCameraX) / abs(x - coordCameraX);
+		coordCameraX = x - 200 * (x - coordCameraX) / abs(x - coordCameraX);
 
 	y += PersonSize / 2;
 	if (abs(y - coordCameraY) > 20)
@@ -32,6 +32,3 @@ void passiveSmoothCamera(float x, float y, float time, float PersonSize)
 
 	view.setCenter(coordCameraX, coordCameraY);
 }
-
-//int x = player.getPlayerCoordinateX();
-//int y = player.getPlayerCoordinateY();

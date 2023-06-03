@@ -45,25 +45,31 @@ void GenerateMap(Sprite& m_map, RenderWindow& window, Player& play, float& time,
 
 int main()
 {
+    // Настройка рандомайзера.
     std::srand(std::time(nullptr));
+
+    // Инициализация карты.
     qmap Map;
     Map.initMap();
-    Map.initMainMap();
-    Map.addDoor();
-    //Map.printMap();
 
     TileMap = Map.getMainMap();
     ObjectMap = Map.getMapWithObject();
 
+    // Настройка окна.
     sf::RenderWindow window(sf::VideoMode(SCREENX, SCREENY), "GameProject");
-    //sf::RenderWindow window(sf::VideoMode(), "GameProject", sf::Style::Fullscreen);
-    view.reset(FloatRect(0, 0, SCREENX, SCREENY));
+    view.reset(FloatRect(0, 0, SCREENX / 2, SCREENY / 2)); // Задаём размеры отображаемой области.
 
+    // Фул экран, для тестов на релизе.
+    //sf::RenderWindow window(sf::VideoMode(), "GameProject", sf::Style::Fullscreen);
+
+    // Подключение шрифта.
     Font font;
     font.loadFromFile("KarmaFuture.ttf");
+
+    // Выводимые сообщения.
     Text textCoord("", font, 48);
     Text textSpawnPoint("", font, 48);
-
+    
     Image map_image;//объект изображения для карты
     map_image.loadFromFile("Tileset.png");//загружаем файл для карты
     Texture tmap;//текстура карты
@@ -72,10 +78,9 @@ int main()
     m_map.setTexture(tmap);//заливаем текстуру спрайтом
 
     sf::Clock clock;
-    sf::Clock Working_hours;
+    sf::Clock temporarily;
     int X = Map.getSpawn().first;
     int Y = Map.getSpawn().second;
-    //Player player("Assets/AnimationSheet_Character.png", 50, 50, 32, 32);
     Player player("Assets/AnimationSheet_Character.png",
         Map.getSpawn(), Map.getRoomWidth(), Map.getRoomHieght(), 32, 32);
 
@@ -91,11 +96,11 @@ int main()
             if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
                 window.close();
         }
-        if (Keyboard::isKeyPressed(Keyboard::G) && Working_hours.getElapsedTime().asSeconds() > 2)
+        if (Keyboard::isKeyPressed(Keyboard::G) && temporarily.getElapsedTime().asSeconds() > 0.5)
         {
             Map.SwitchTheBarrier();
             ObjectMap = Map.getMapWithObject();
-            Working_hours.restart();
+            temporarily.restart();
         }
 
         window.setView(view); // обновление камеры

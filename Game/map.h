@@ -29,7 +29,7 @@ private:
     int percentageOfPaths = 20; // Ўанс удалени€ коридора, при условии, что кол-во доступных комнат не изменитс€.
     pair<int, int> Spawn = pair<int, int>(-1, -1);
 
-    bool vision_barrier = false;
+    bool vision_barrier = true;
 
     //////////// ”далить случайные коридоры. ////////////
     void RandCorridors()
@@ -326,6 +326,8 @@ public:
             if (getMinCntRoom() <= cntRoom && cntRoom <= getMaxCntRoom())
                 break;
         }
+        initMainMap();
+        addDoor();
     }
 
     //////////// ¬ывести карту в консоль ////////////
