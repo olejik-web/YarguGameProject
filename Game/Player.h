@@ -19,10 +19,13 @@ public:
     Image image;
     Texture texture;
 
+    bool fire_ball = false;
     bool isShoot = false;
     bool isAttack = false;
     bool isRight = true;
     int Health = 5;
+    int type_bullet = 0;
+
 
     Player(string F, float X, float Y, float W, float H)
     {
@@ -166,6 +169,11 @@ public:
         if (Keyboard::isKeyPressed(Keyboard::Space)) // Стрельба.
         {
             isShoot = true;
+        }
+        if (Keyboard::isKeyPressed(Keyboard::S)) // Стрельба.
+        {
+            type_bullet++;
+            type_bullet %= 2;
         }
         interactionWithMap(time,TileMap);
         sprite.setPosition(x, y);

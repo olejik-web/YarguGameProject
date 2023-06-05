@@ -17,8 +17,6 @@ using namespace std;
 int SCREENX = 1000;
 int SCREENY = 600;
 
-vector<Bullet*> bullets;
-
 void Bullet_intersect(Sprite& s_map)
 {
     for (int i = 0; i < bullets.size(); i++)
@@ -85,8 +83,16 @@ int main()
                 window.close();
             if (player.isShoot)
             {
-                bullets.push_back(new Bullet(player.getX(), player.getY(), ghost.sprite.getPosition().x, ghost.sprite.getPosition().y));
-                player.isShoot = false;
+                if (player.type_bullet == 0)
+                {
+                    bullets.push_back(new FireBall("Assets/fire_ball.png", player.getX() + 16, player.getY() + 16, ghost.sprite.getPosition().x + 16, ghost.sprite.getPosition().y + 16, 0.3, 1));
+                    player.isShoot = false;
+                }
+                else
+                {
+                    bullets.push_back(new Bolt("Assets/light_bolt.png", player.getX() + 16, player.getY() + 16, ghost.sprite.getPosition().x + 16, ghost.sprite.getPosition().y + 16, 0.3, 0.7));
+                    player.isShoot = false;
+                }
             }
         }
 
